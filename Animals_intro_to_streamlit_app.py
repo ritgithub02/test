@@ -10,7 +10,7 @@ like = st.checkbox("Do you like this app?")
 button2 = st.button("Submit")
 if button2:
     if like:
-        st.write("Thanks. I like it too.")
+        st.write("Thanks. I like it too this app.")
     else:
         st.write("I'm sorry. You have bad tastes.")
 
