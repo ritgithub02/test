@@ -7,11 +7,6 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 
-
-
-import lasio
-import streamlit as st
-
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
@@ -59,8 +54,6 @@ if __name__ == "__main__":
     if well_data is not None:
         well_data.reset_index(inplace=True)
         st.write(well_data)
-
-
 
 
 
