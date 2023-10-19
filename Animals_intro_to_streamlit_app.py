@@ -51,7 +51,7 @@ def main():
         if las_file is not None:
             st.success("LAS file loaded successfully")
             st.write("Well Data:")
-            st.write(well_data)
+            # st.write(well_data)
 
     # Return well_data from the main function
     return well_data
@@ -60,6 +60,7 @@ if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
         well_data.reset_index(inplace=True)
+        st.write(well_data)
         st.write(well_data.describe())
         st.write(well_data['DTCO'])
 
