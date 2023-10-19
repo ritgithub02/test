@@ -9,39 +9,23 @@ import pandas as pd
 import lasio
 
 
+@st.cache
+def load_data(uploadedfile):
+    if uploadedfile:
+        uploadedfile.seek(0)  #RZ: reset buffer to beginning each time
+        string = uploadedfile.read().decode()
+        las_file = lasio.read(string)
 
-# Create file uploader object
-upload_file = st.file_uploader('Upload a file for prediction', type=['csv', 'las'])
-rt0 = None  # Initialize rt0 as None
+        # Create the dataframe
+        well_data = las_file.df()
 
-# Load the uploaded file into a Pandas DataFrame
-if upload_file is not None:
-    file_extension = upload_file.name.split('.')[-1].lower()
-    if file_extension == 'csv':
-        rt0 = pd.read_csv(upload_file)
-    elif file_extension == 'las':
-        las_file = lasio.read(upload_file)
-        rt0 = las_file.df()
-    rt0 = rt0.dropna()
-
-st.title('Data')
-
-# Initialize selected_columns and selected_t to None
-selected_columns = None
-selected_t = None
-
-# Check if rt0 is not None (file is uploaded)
-if rt0 is not None:
-    selected_columns = st.multiselect('Select columns to display:', rt0.columns)
-    rt = rt0[selected_columns] if selected_columns else rt0
-
-    st.write(rt.describe())
-
-    # Header for selecting a target column
-    st.header("Choose Target")
-    selected_t = st.selectbox("Select a Target", rt.columns)
-    button6 = st.button("Submit")
-
+        #Assign the dataframe index to a curve
+        well_data['DEPTH'] = well_data.index
+    else:
+        las_file=None
+        well_data=None
+    
+    return las_file, well_data
 
 
 
