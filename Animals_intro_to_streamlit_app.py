@@ -20,7 +20,7 @@ def load_data(uploadedfile):
         well_data = las_file.df()
 
         # Assign the DataFrame index to a curve
-        well_data['DEPTH'] = well_data.index.astype(bool)
+        well_data['DEPTH'] = well_data.index
     else:
         las_file = None
         well_data = None
