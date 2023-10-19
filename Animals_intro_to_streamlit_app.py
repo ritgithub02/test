@@ -105,7 +105,6 @@ elif selected_tab == "Visualization":
 
 
 
-
 elif selected_tab == "Visualization":
     st.title("Visualization Tab")
 
@@ -120,11 +119,10 @@ elif selected_tab == "Visualization":
                 if len(curves) < 2:
                     st.warning('Please select at least 2 curves for a line chart.')
                 else:
-                    curve_index = 1
                     fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
+
                     for curve in curves:
-                        fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH'], mode='lines', name=curve), row=1, col=curve_index)
-                        curve_index += 1
+                        fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH'], mode='lines', name=curve))
 
                     fig.update_layout(height=800, showlegend=True, yaxis={'title': 'Depth (m)', 'autorange': 'reversed'})
                     fig.update_layout(template='seaborn')
@@ -137,6 +135,7 @@ elif selected_tab == "Visualization":
                     st.warning('Please select at least 2 curves for a scatter plot.')
                 else:
                     scatter_fig = go.Figure()
+
                     for curve in curves:
                         scatter_fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH'], mode='markers', name=curve))
 
@@ -167,3 +166,4 @@ elif selected_tab == "Visualization":
                 st.plotly_chart(cross_plot, use_container_width=True)
 
         plot(well_df)
+
