@@ -335,9 +335,12 @@ if __name__ == "__main__":
         well_data.to_csv('al.csv', index=False)
 
 
-# st.cache_data.clear()
-load_data.cache_clear()  # Clear the cache
-main.cache_clear() 
+# Clear all cached entries for this function
+foo.clear()
+
+# Clear values from *all* in-memory or on-disk cached functions
+st.cache_data.clear()
+
 
 
 
