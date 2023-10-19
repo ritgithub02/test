@@ -49,22 +49,22 @@ import missingno as msno
 
 
 
-st.title('Formation Evaluation')
-image = Image.open("psd1.jpg")
-st.image(image, caption="", use_column_width=True)
+# st.title('Formation Evaluation')
+# image = Image.open("psd1.jpg")
+# st.image(image, caption="", use_column_width=True)
 
 
 
 
 
-las_file_path = "Gorgonichthys_1_suite3_supercombo_log.las"
-well_data = lasio.read(las_file_path)
-# columns = well_data.keys()
+# las_file_path = "Gorgonichthys_1_suite3_supercombo_log.las"
+# well_data = lasio.read(las_file_path)
+# # columns = well_data.keys()
 
-well_df = well_data.df()
-well_df=well_df.reset_index()
+# well_df = well_data.df()
+# well_df=well_df.reset_index()
 
-columns= well_df.columns
+# columns= well_df.columns
 
 
 tab_a,tab_b, tab_c =st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization' ])
