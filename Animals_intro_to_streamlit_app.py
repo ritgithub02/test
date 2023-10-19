@@ -55,15 +55,25 @@ def main():
 
     return well_data  # Ensure that well_data is returned even if it's not defined
 
+# if __name__ == "__main__":
+#     well_data = main()
+#     if well_data is not None:
+#         # well_data.reset_index(inplace=True)
+#         st.write(well_data)
+        
+#         st.write(well_data['DTCO'])
+
 if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
-        # well_data.reset_index(inplace=True)
-        st.write(well_data)
+        # Create a new DataFrame
+        new_df = pd.DataFrame()
         
-        st.write(well_data['DTCO'])
-
-
+        # Append well_data to the new DataFrame
+        new_df = new_df.append(well_data, ignore_index=True)
+        
+        st.write(new_df)
+        st.write(new_df['DTCO'])
 
 
 
