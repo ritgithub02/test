@@ -333,18 +333,6 @@ if __name__ == "__main__":
 
 
 
-# # Read the CSV file for further processing
-# ui = pd.read_csv('al.csv')
-
-# # Display the summary statistics of the loaded data
-# st.write(ui.describe())
-
-#     well_data = pd.read_csv(upload_file)
-#     well_df = well_data.df()
-#     well_df=well_df.dropna()
-#     well_df=well_df.reset_index()
-#     columns= well_df.columns
-
 
 # ------------------------------------------------------------------------------------------
 # # Define the load_data function
@@ -461,6 +449,11 @@ if __name__ == "__main__":
 
 
 
+well_df = pd.read_csv('al.csv')
+st.write('Logs:')
+st.write(well_df.columns)
+st.write('Statistics:')
+st.write(well_df.describe())    
 
 
 
@@ -471,15 +464,15 @@ if __name__ == "__main__":
 
 # ----------------------------------
 
-tab_a,tab_b, tab_c =st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization' ])
+# tab_a,tab_b, tab_c =st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization' ])
 
-with tab_a:
+# with tab_a:
 
-    well_df = pd.read_csv('al.csv')
-    st.write('Logs:')
-    st.write(well_df.columns)
-    st.write('Statistics:')
-    st.write(well_df.describe())    
+#     well_df = pd.read_csv('al.csv')
+#     st.write('Logs:')
+#     st.write(well_df.columns)
+#     st.write('Statistics:')
+#     st.write(well_df.describe())    
 
     # st.write('Missing Ranges :')
     # # st.write(msno.matrix(well_df))
