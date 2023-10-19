@@ -55,6 +55,7 @@ def main():
 if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
+        well_data.reset_index(inplace=True)
         st.write(well_data)
 
 
