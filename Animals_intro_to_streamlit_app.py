@@ -14,28 +14,33 @@ import streamlit as st
 import pandas as pd
 import lasio
 
-st.title("Drag and Drop LAS, CSV, or XLSX File")
+def main():
+    st.title("Drag and Drop LAS, CSV, or XLSX File")
 
-uploaded_file = st.file_uploader("Drag and drop a file here.", type=["las", "csv", "xlsx"])
+    # Allow users to upload a file
+    uploaded_file = st.file_uploader("Choose a file...", type=["csv", "xlsx", "las"])
 
-if uploaded_file is not None:
-    file_extension = uploaded_file.name.split('.')[-1].lower()
+    if uploaded_file is not None:
+        file_extension = uploaded_file.name.split('.')[-1]
 
-    if file_extension == 'las':
-        las_data = lasio.read(uploaded_file)
-        st.write("### LAS File Contents:")
-        st.write(las_data.df())
+        if file_extension == 'las':
+            # Handle LAS file
+            las_data = lasio.read(uploaded_file)
+            st.write("### LAS File Contents:")
+            st.write(las_data.df())
 
-    elif file_extension in ('csv', 'xlsx'):
-        if file_extension == 'csv':
-            df = pd.read_csv(uploaded_file)
-        else:
-            df = pd.read_excel(uploaded_file, engine="openpyxl")
+        elif file_extension in ('csv', 'xlsx'):
+            # Handle CSV or XLSX file
+            if file_extension == 'csv':
+                df = pd.read_csv(uploaded_file)
+            else:
+                df = pd.read_excel(uploaded_file, engine="openpyxl")
 
-        st.write(f"### {file_extension.upper()} File Contents:")
-        st.write(df)
+            st.write(f"### {file_extension.upper()} File Contents:")
+            st.write(df)
 
-
+if __name__ == "__main__":
+    main()
 
 
 
