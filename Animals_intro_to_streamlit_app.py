@@ -10,7 +10,8 @@ import streamlit as st
 
 
 
-
+import lasio
+import streamlit as st
 
 # Define the load_data function
 def load_data(uploadedfile):
@@ -47,12 +48,68 @@ def main():
         las_file, well_data = load_data(uploaded_file)
 
         if las_file is not None:
-            st.success("LAS file loaded successfully.")
+            st.success("LAS file loaded successfully")
             st.write("Well Data:")
             st.write(well_data)
 
+    # Return well_data from the main function
+    return well_data
+
 if __name__ == "__main__":
-    main()
+    well_data = main()
+    if well_data is not None:
+        st.write(well_data)
+
+
+
+
+
+
+
+
+
+
+# # Define the load_data function
+# def load_data(uploadedfile):
+#     if uploadedfile:
+#         uploadedfile.seek(0)  # Reset buffer to the beginning each time
+#         string = uploadedfile.read().decode()
+#         las_file = lasio.read(string)
+
+#         # Create the DataFrame
+#         well_data = las_file.df()
+
+#         # Assign the DataFrame index to a curve
+#         well_data['DEPTH'] = well_data.index.astype(bool)
+#     else:
+#         las_file = None
+#         well_data = None
+
+#     return las_file, well_data
+
+# # Create a Streamlit app
+# def main():
+#     st.title("LAS File Viewer")
+
+#     # Upload a LAS file
+#     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
+
+#     if uploaded_file is not None:
+#         st.write("File Details:")
+#         st.write("Name:", uploaded_file.name)
+#         st.write("Type:", uploaded_file.type)
+#         st.write("Size:", uploaded_file.size, "bytes")
+
+#         # Call the load_data function
+#         las_file, well_data = load_data(uploaded_file)
+
+#         if las_file is not None:
+#             st.success("LAS file loaded successfully.")
+#             st.write("Well Data:")
+#             st.write(well_data)
+
+# if __name__ == "__main__":
+#     main()
 
 
 
