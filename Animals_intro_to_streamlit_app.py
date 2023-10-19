@@ -8,47 +8,51 @@ import streamlit as st
 
 
 
-
-
 import streamlit as st
-import pandas as pd
 import lasio
+import pandas as pd
 
+# Define the load_data function
+def load_data(uploadedfile):
+    if uploadedfile:
+        uploadedfile.seek(0)  # Reset buffer to the beginning each time
+        string = uploadedfile.read().decode()
+        las_file = lasio.read(string)
+
+        # Create the DataFrame
+        well_data = las_file.df()
+
+        # Assign the DataFrame index to a curve
+        well_data['DEPTH'] = well_data.index
+    else:
+        las_file = None
+        well_data = None
+
+    return las_file, well_data
+
+# Create a Streamlit app
 def main():
-    st.title("Drag and Drop LAS, CSV, or XLSX File")
+    st.title("LAS File Viewer")
 
-    # Allow users to upload a file
-    uploaded_file = st.file_uploader("Choose a file...", type=["csv", "xlsx", "las"])
+    # Upload a LAS file
+    uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 
     if uploaded_file is not None:
-        file_extension = uploaded_file.name.split('.')[-1]
+        st.write("File Details:")
+        st.write("Name:", uploaded_file.name)
+        st.write("Type:", uploaded_file.type)
+        st.write("Size:", uploaded_file.size, "bytes")
 
-        if file_extension == 'las':
-            # Handle LAS file
-            las_data = lasio.read(uploaded_file)
-            st.write("### LAS File Contents:")
-            st.write(las_data.df())
+        # Call the load_data function
+        las_file, well_data = load_data(uploaded_file)
 
-        elif file_extension in ('csv', 'xlsx'):
-            # Handle CSV or XLSX file
-            if file_extension == 'csv':
-                df = pd.read_csv(uploaded_file)
-            else:
-                df = pd.read_excel(uploaded_file, engine="openpyxl")
-
-            st.write(f"### {file_extension.upper()} File Contents:")
-            st.write(df)
+        if las_file is not None:
+            st.success("LAS file loaded successfully.")
+            st.write("Well Data:")
+            st.write(well_data)
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
 
 
 
