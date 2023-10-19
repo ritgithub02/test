@@ -51,9 +51,9 @@ def main():
         if las_file is not None:
             st.success("LAS file loaded successfully.")
             st.write("Well Data:")
-            st.code(well_data.reset_index(Inplace=True)
+            well_data.reset_index(inplace=True)
             st.write(well_data)
-
+                    
 if __name__ == "__main__":
     main()
 
