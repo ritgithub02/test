@@ -3,14 +3,9 @@ import pandas as pd
 import lasio  # las files
 import matplotlib.pyplot as plt
 
-import streamlit as st
-
-
-
 
 import streamlit as st
-import lasio
-import pandas as pd
+
 
 # Define the load_data function
 def load_data(uploadedfile):
@@ -32,7 +27,7 @@ def load_data(uploadedfile):
 
 # Create a Streamlit app
 def main():
-    st.title("LAS File Viewer")
+    st.subheader("File Load:")
 
     # Upload a LAS file
     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
@@ -40,7 +35,7 @@ def main():
     if uploaded_file is not None:
         st.write("File Details:")
         st.write("Name:", uploaded_file.name)
-        st.write("Type:", uploaded_file.type)
+        # st.write("Type:", uploaded_file.type)
         st.write("Size:", uploaded_file.size, "bytes")
 
         # Call the load_data function
