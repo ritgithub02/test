@@ -4,25 +4,24 @@ import lasio  # las files
 import matplotlib.pyplot as plt
 
 import streamlit as st
-import streamlit as st
-import pandas as pd
-import lasio
 
-import streamlit as st
 import pandas as pd
-import lasio
+import io  # Import the io module for working with binary data
 
 # Create file uploader object
 upload_file = st.file_uploader('Upload a file for prediction', type=['csv', 'las'])
 rt0 = None  # Initialize rt0 as None
 
-# Load the uploaded file into a Pandas DataFrame
+# Load the uploaded file into a Pandas DataFrame or LAS data
 if upload_file is not None:
     file_extension = upload_file.name.split('.')[-1].lower()
     if file_extension == 'csv':
         rt0 = pd.read_csv(upload_file)
     elif file_extension == 'las':
-        las_file = lasio.read(upload_file)
+        # Read the binary data from the uploaded file
+        las_data = upload_file.read()
+        # Use io.BytesIO to wrap the binary data
+        las_file = lasio.read(io.BytesIO(las_data))
         rt0 = las_file.df()
     rt0 = rt0.dropna()
 
@@ -43,7 +42,6 @@ if rt0 is not None:
     st.header("Choose Target")
     selected_t = st.selectbox("Select a Target", rt.columns)
     button6 = st.button("Submit")
-
 
 
 
