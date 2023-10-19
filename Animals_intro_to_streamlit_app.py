@@ -280,8 +280,6 @@ import missingno as msno
 
 
 
-import streamlit as st
-import lasio
 
 def load_data(uploadedfile):
     if uploadedfile:
@@ -335,6 +333,11 @@ if __name__ == "__main__":
         st.write(well_data['DTCO'])
         st.write(well_df=well_data.copy())
         well_data.to_csv('al.csv', index=False)
+
+
+# st.cache_data.clear()
+load_data.cache_clear()  # Clear the cache
+main.cache_clear() 
 
 
 
