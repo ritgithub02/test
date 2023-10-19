@@ -19,7 +19,7 @@ def load_data(uploadedfile):
         # Create the DataFrame
         well_data = las_file.df()
         
-        well_data.reset_index()
+        well_data.reset_index(inplace=False)
 
         
         # Assign the DataFrame index to a curve
