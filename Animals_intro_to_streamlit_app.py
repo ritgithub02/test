@@ -46,7 +46,7 @@ if __name__ == "__main__":
         well_data.to_csv('well_data.csv', index=False)
 
 # Define your 'plot_vshale' function here
-
+st.cache_data.clear()
 tab_a, tab_b, tab_c = st.columns(3)
 selected_tab = tab_a.radio('Select a Tab', ['Data Loading', 'Formation Evaluation', 'Visualization'])
 
