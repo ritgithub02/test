@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
 
 
-
+well_data.reset_index(inplace=True)
 st.write(well_data)
 
 
