@@ -51,7 +51,6 @@ import missingno as msno
 
 
 
-
 # ------------------------------------------------------------------------------------
 # Define the load_data function
 def load_data(uploadedfile):
@@ -61,15 +60,15 @@ def load_data(uploadedfile):
         las_file = lasio.read(string)
 
         # Create the DataFrame
-        well_df = las_file.df()
+        well_data = las_file.df()
 
         # Assign the DataFrame index to a curve
-        # well_df['DEPTH'] = well_df.index.astype(bool)
+        # well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
-        well_df = None
+        well_data = None
 
-    return las_file, well_df
+    return las_file, well_data
 
 # Create a Streamlit app
 def main():
@@ -85,24 +84,25 @@ def main():
         st.write("Size:", uploaded_file.size, "bytes")
 
         # Call the load_data function
-        las_file, well_df = load_data(uploaded_file)
+        las_file, well_data = load_data(uploaded_file)
 
         if las_file is not None:
             st.success("LAS file loaded successfully")
             st.write("Well Data:")
-            # st.write(well_df)
+            # st.write(well_data)
 
-    # Return well_df from the main function
-    return well_df
+    # Return well_data from the main function
+    return well_data
 
 if __name__ == "__main__":
-    well_df = main()
-    if well_df is not None:
-        well_df.reset_index(inplace=True)
-        st.write(well_df)
-        st.write(well_df.describe())
-        st.write(well_df['DTCO'])
-        well_df.to_csv('al.csv')
+    well_data = main()
+    if well_data is not None:
+        well_data.reset_index(inplace=True)
+        st.write(well_data)
+        st.write(well_data.describe())
+        st.write(well_data['DTCO'])
+        st.write(well_df=well_data.copy())
+        well_data.to_csv('al.csv')
 # --------------------------------------------------------------------------------------------------
 
 
@@ -110,7 +110,11 @@ if __name__ == "__main__":
 
 
 
+# Read the CSV file for further processing
+ui = pd.read_csv('al.csv')
 
+# Display the summary statistics of the loaded data
+st.write(ui.describe())
 
 
 
