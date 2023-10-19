@@ -23,8 +23,8 @@ def load_data(uploadedfile):
         # Create the DataFrame
         well_data = las_file.df()
 
-        # Assign the DataFrame index to a curve
-        well_data['DEPTH'] = well_data.index.astype(bool)
+        # # Assign the DataFrame index to a curve
+        # well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
         well_data = None
@@ -58,6 +58,7 @@ def main():
 if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
+        well_data.reset_index(inplace=True)
         st.write(well_data)
 
 
