@@ -6,8 +6,16 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-import lasio
-import streamlit as st
+
+
+
+
+
+
+
+
+
+
 
 # Define the load_data function
 def load_data(uploadedfile):
@@ -18,12 +26,9 @@ def load_data(uploadedfile):
 
         # Create the DataFrame
         well_data = las_file.df()
-        
-        well_data.reset_index(inplace=False)
 
-        
         # Assign the DataFrame index to a curve
-        well_data['DEPTH'] = well_data.index
+        well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
         well_data = None
@@ -37,8 +42,6 @@ def main():
     # Upload a LAS file
     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 
-    well_data = None  # Initialize well_data
-
     if uploaded_file is not None:
         st.write("File Details:")
         st.write("Name:", uploaded_file.name)
@@ -49,31 +52,27 @@ def main():
         las_file, well_data = load_data(uploaded_file)
 
         if las_file is not None:
-            st.success("LAS file loaded successfully")
+            st.success("LAS file loaded successfully.")
             st.write("Well Data:")
             st.write(well_data)
 
-    return well_data  # Ensure that well_data is returned even if it's not defined
-
-# if __name__ == "__main__":
-#     well_data = main()
-#     if well_data is not None:
-#         # well_data.reset_index(inplace=True)
-#         st.write(well_data)
-        
-#         st.write(well_data['DTCO'])
-
 if __name__ == "__main__":
-    well_data = main()
+    main()
     if well_data is not None:
-        # Create a new DataFrame
-        new_df = pd.DataFrame()
-        
-        # Append well_data to the new DataFrame
-        new_df = new_df.append(well_data, ignore_index=True)
-        
-        st.write(new_df)
-        st.write(new_df['DTCO'])
+        # well_data.reset_index(inplace=True)
+        st.write(well_data)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
