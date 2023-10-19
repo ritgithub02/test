@@ -61,6 +61,7 @@ if __name__ == "__main__":
     if well_data is not None:
         well_data.reset_index(inplace=True)
         st.write(well_data.describe())
+        st.write(well_data.['DTCO'])
 
 
 
