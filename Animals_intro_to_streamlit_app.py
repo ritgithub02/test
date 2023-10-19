@@ -18,7 +18,10 @@ def load_data(uploadedfile):
 
         # Create the DataFrame
         well_data = las_file.df()
+        
+        well_data.reset_index()
 
+        
         # Assign the DataFrame index to a curve
         well_data['DEPTH'] = well_data.index
     else:
