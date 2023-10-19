@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import missingno as msno
 
+
 st.title('Formation Evaluation')
 image = Image.open("psd1.jpg")
 st.image(image, caption="", use_column_width=True)
