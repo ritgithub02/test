@@ -63,8 +63,7 @@ if __name__ == "__main__":
         st.write(well_data)
         st.write(well_data.describe())
         st.write(well_data['DTCO'])
-
-well_df=well_data.copy()
+        well_df=well_data.copy()
 
 
 
