@@ -25,3 +25,7 @@ if rt0 is not None:
 
     st.write(rt.describe())
     rt.to_csv('al.csv')
+
+ui=pd.read_csv('al.csv')
+ui=df()
+ui.describe()
