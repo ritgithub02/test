@@ -24,3 +24,4 @@ if rt0 is not None:
     rt = rt0[selected_columns] if selected_columns else rt0
 
     st.write(rt.describe())
+    rt.to_csv('al.csv')
