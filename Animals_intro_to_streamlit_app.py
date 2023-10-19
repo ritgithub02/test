@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
+import lasio
+import streamlit as st
 
 # Define the load_data function
 def load_data(uploadedfile):
@@ -18,7 +20,7 @@ def load_data(uploadedfile):
         well_data = las_file.df()
 
         # Assign the DataFrame index to a curve
-        # well_data['DEPTH'] = well_data.index.astype(bool)
+        well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
         well_data = None
@@ -31,6 +33,8 @@ def main():
 
     # Upload a LAS file
     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
+
+    well_data = None  # Initialize well_data
 
     if uploaded_file is not None:
         st.write("File Details:")
@@ -46,15 +50,12 @@ def main():
             st.write("Well Data:")
             st.write(well_data)
 
-    # Return well_data from the main function
-    return well_data
+    return well_data  # Ensure that well_data is returned even if it's not defined
 
 if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
-        well_data.reset_index(inplace=True)
         st.write(well_data)
-
 
 
 
