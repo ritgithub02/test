@@ -6,3 +6,5 @@ numpy==1.21.2
 matplotlib==3.4.3
 Pillow==8.3.2
 missingno==0.4.2
+pathlib2==2.3.5
+base64==1.0
