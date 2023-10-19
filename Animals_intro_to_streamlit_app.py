@@ -19,7 +19,7 @@ st.image(image, caption="", use_column_width=True)
 
 
 
-las_file_path = "D:\Case study\Gorgonichthys_1_suite3_supercombo_log.las"
+las_file_path = "Gorgonichthys_1_suite3_supercombo_log.las"
 well_data = lasio.read(las_file_path)
 # columns = well_data.keys()
 
