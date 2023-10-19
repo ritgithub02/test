@@ -5,20 +5,18 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-# Import the necessary libraries
-import streamlit as st
-import pandas as pd
-
-# Create file uploader object for CSV file
-csv_file = st.file_uploader('Upload a CSV file for prediction', type=['csv'])
+# Create file uploader object
+upload_file = st.file_uploader('Upload a file for prediction', type=['csv', 'las'])
 rt0 = None  # Initialize rt0 as None
 
-# Create file uploader object for LAS file
-las_file = st.file_uploader('Upload a LAS file for prediction', type=['las'])
-
-# Load the CSV file into a Pandas DataFrame
-if csv_file is not None:
-    rt0 = pd.read_csv(csv_file)
+# Load the CSV or LAS file into a Pandas DataFrame
+if upload_file is not None:
+    if upload_file.name.endswith('.csv'):
+        rt0 = pd.read_csv(upload_file)
+    elif upload_file.name.endswith('.las'):
+        # You can implement LAS file parsing logic here
+        # Replace the next line with the code to parse LAS files into a DataFrame
+        st.error("LAS file parsing is not implemented yet. Please upload a CSV file.")
     rt0 = rt0.dropna()
 
 st.title('Data')
@@ -27,7 +25,7 @@ st.title('Data')
 selected_columns = None
 selected_t = None
 
-# Check if rt0 is not None (CSV file is uploaded)
+# Check if rt0 is not None (file is uploaded)
 if rt0 is not None:
     selected_columns = st.multiselect('Select columns to display:', rt0.columns)
     rt = rt0[selected_columns] if selected_columns else rt0
@@ -38,14 +36,6 @@ if rt0 is not None:
     st.header("Choose Target")
     selected_t = st.selectbox("Select a Target", rt.columns)
     button6 = st.button("Submit")
-
-# Add code for processing LAS file if uploaded
-if las_file is not None:
-    # Process the LAS file here (replace with your specific code)
-    st.header("LAS File Processing")
-    st.write("You can process the LAS file here.")
-
-# Additional code for processing both CSV and LAS files can be added as needed
 
 
 
