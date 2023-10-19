@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 import lasio  # las files
 import matplotlib.pyplot as plt
-
-
 import streamlit as st
 
 
@@ -62,7 +60,7 @@ if __name__ == "__main__":
     well_data = main()
     if well_data is not None:
         well_data.reset_index(inplace=True)
-        st.write(well_data)
+        st.write(well_data.describe())
 
 
 
