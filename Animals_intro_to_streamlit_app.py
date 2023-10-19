@@ -11,6 +11,102 @@ from PIL import Image
 import missingno as msno
 
 
+
+
+
+
+
+# ------------------------------------------------
+
+
+from pathlib import Path
+import base64
+import streamlit as st
+
+
+
+def img_to_bytes(img_path):
+    img_bytes = Path(img_path).read_bytes()
+    encoded = base64.b64encode(img_bytes).decode()
+    return encoded
+
+def img_to_html(img_path, link=''):
+    img_extension = Path(img_path).suffix  # Get the file extension (e.g., '.jpg')
+    mime_type = f'image/{img_extension[1:]}'  # Remove the dot from the extension
+    img_html = "<a href='{}'><img src='data:{mime_type};base64,{img_bytes}' class='img-fluid' width='729' height='238'>".format(
+        link,
+        mime_type=mime_type,
+        img_bytes=img_to_bytes(img_path)
+    )
+    return img_html
+
+st.markdown(img_to_html('Psd1.jpg'), unsafe_allow_html=True)
+
+from pathlib import Path
+import base64
+import streamlit as st
+import lasio
+import pandas as pd
+
+def img_to_bytes(img_path):
+    img_bytes = Path(img_path).read_bytes()
+    encoded = base64.b64encode(img_bytes).decode()
+    return encoded
+
+def img_to_html(img_path, link=''):
+    img_extension = Path(img_path).suffix  # Get the file extension (e.g., '.jpg')
+    mime_type = f'image/{img_extension[1:]}'  # Remove the dot from the extension
+    img_html = "<a href='{}'><img src='data:{mime_type};base64,{img_bytes}' class='img-fluid' width='729' height='238'>".format(
+        link,
+        mime_type=mime_type,
+        img_bytes=img_to_bytes(img_path)
+    )
+    return img_html
+
+def main():
+    st.title("LAS File and DataFrame Viewer")
+
+    # Upload a LAS file
+    las_file = st.file_uploader("Upload a LAS file", type=[".las"])
+
+    if las_file is not None:
+        las_data = lasio.read(las_file)
+        las_df = las_data.df()
+
+        # Display LAS data as a DataFrame
+        st.dataframe(las_df)
+
+if __name__ == "__main__":
+    main()
+
+
+# --------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 st.title('Formation Evaluation')
 image = Image.open("psd1.jpg")
 st.image(image, caption="", use_column_width=True)
