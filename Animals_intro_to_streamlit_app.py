@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
+
+
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
@@ -16,7 +18,7 @@ def load_data(uploadedfile):
         # Create the DataFrame
         well_data = las_file.df()
 
-        # # Assign the DataFrame index to a curve
+        # Assign the DataFrame index to a curve
         # well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
