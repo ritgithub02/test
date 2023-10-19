@@ -14,6 +14,65 @@ import missingno as msno
 
 
 
+# # Define the load_data function
+# def load_data(uploadedfile):
+#     if uploadedfile:
+#         uploadedfile.seek(0)  # Reset buffer to the beginning each time
+#         string = uploadedfile.read().decode()
+#         las_file = lasio.read(string)
+
+#         # Create the DataFrame
+#         well_data = las_file.df()
+#     else:
+#         las_file = None
+#         well_data = None
+
+#     return las_file, well_data
+
+# # Create a Streamlit app
+# def main():
+#     st.title("LAS File Viewer")
+
+#     # Upload a LAS file
+#     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
+
+#     if uploaded_file is not None:
+#         st.write("File Details:")
+#         st.write("Name:", uploaded_file.name)
+#         st.write("Type:", uploaded_file.type)
+#         st.write("Size:", uploaded_file.size, "bytes")
+
+#         # Button to run the code
+#         if st.button("Run Analysis"):
+#             las_file, well_data = load_data(uploaded_file)
+
+#             if las_file is not None:
+#                 st.success("LAS file loaded successfully")
+#                 st.write("Well Data:")
+#                 st.write(well_data)
+
+#     # Return well_data from the main function
+#     return well_data
+
+# if __name__ == "__main__":
+#     well_data = main()
+#     if well_data is not None:
+#         well_data.reset_index(inplace=True)
+#         st.write(well_data)
+#         st.write(well_data.describe())
+#         st.write(well_data['DTCO'])
+#         st.write(well_df=well_data.copy())
+#         well_data.to_csv('al.csv', index=False)
+
+
+
+
+
+
+
+
+
+
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
@@ -36,33 +95,49 @@ def main():
     # Upload a LAS file
     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 
+    well_data = None  # Initialize well_data to None
+
     if uploaded_file is not None:
         st.write("File Details:")
         st.write("Name:", uploaded_file.name)
         st.write("Type:", uploaded_file.type)
         st.write("Size:", uploaded_file.size, "bytes")
 
-        # Button to run the code
-        if st.button("Run Analysis"):
-            las_file, well_data = load_data(uploaded_file)
+        # Call the load_data function
+        las_file, well_data = load_data(uploaded_file)
 
-            if las_file is not None:
-                st.success("LAS file loaded successfully")
-                st.write("Well Data:")
-                st.write(well_data)
+        if las_file is not None:
+            st.success("LAS file loaded successfully")
+            st.write("Well Data:")
+            st.write(well_data)
 
     # Return well_data from the main function
     return well_data
 
-if __name__ == "__main__":
+rerun = True
+while rerun:
     well_data = main()
     if well_data is not None:
         well_data.reset_index(inplace=True)
         st.write(well_data)
         st.write(well_data.describe())
         st.write(well_data['DTCO'])
-        st.write(well_df=well_data.copy())
+        st.write(well_data.copy())  # Not sure what you intended with this line
         well_data.to_csv('al.csv', index=False)
+
+    rerun = st.button("Rerun")
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # # Define the load_data function
