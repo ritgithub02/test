@@ -40,6 +40,7 @@ def main():
 
         # Call the load_data function
         las_file, well_data = load_data(uploaded_file)
+        well_data=well_data.reset_index()
 
         if las_file is not None:
             st.success("LAS file loaded successfully.")
