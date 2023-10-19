@@ -4,50 +4,40 @@ import lasio  # las files
 import matplotlib.pyplot as plt
 
 import streamlit as st
+@st.cache
+def load_data(uploadedfile):
+    if uploadedfile:
+        uploadedfile.seek(0)  #RZ: reset buffer to beginning each time
+        string = uploadedfile.read().decode()
+        las_file = lasio.read(string)
 
-import pandas as pd
-import io  # Import the io module for working with binary data
+        # Create the dataframe
+        well_data = las_file.df()
 
-# Create file uploader object
-upload_file = st.file_uploader('Upload a file for prediction', type=['csv', 'las'])
-rt0 = None  # Initialize rt0 as None
-
-# Load the uploaded file into a Pandas DataFrame or LAS data
-if upload_file is not None:
-    file_extension = upload_file.name.split('.')[-1].lower()
-    if file_extension == 'csv':
-        rt0 = pd.read_csv(upload_file)
-    elif file_extension == 'las':
-        # Read the binary data from the uploaded file
-        las_data = upload_file.read()
-        # Use io.BytesIO to wrap the binary data
-        las_file = lasio.read(io.BytesIO(las_data))
-        rt0 = las_file.df()
-    rt0 = rt0.dropna()
-
-st.title('Data')
-
-# Initialize selected_columns and selected_t to None
-selected_columns = None
-selected_t = None
-
-# Check if rt0 is not None (file is uploaded)
-if rt0 is not None:
-    selected_columns = st.multiselect('Select columns to display:', rt0.columns)
-    rt = rt0[selected_columns] if selected_columns else rt0
-
-    st.write(rt.describe())
-
-    # Header for selecting a target column
-    st.header("Choose Target")
-    selected_t = st.selectbox("Select a Target", rt.columns)
-    button6 = st.button("Submit")
+        #Assign the dataframe index to a curve
+        well_data['DEPTH'] = well_data.index
+    else:
+        las_file=None
+        well_data=None
+    
+    return las_file, well_data
 
 
 
 
 
+uploadedfile = open('yourfile.las', 'rb')  # Open the LAS file in binary read mode
+las_file, well_data = load_data(uploadedfile)
 
+if las_file is not None:
+    # Process the LAS file or well_data as needed
+    # Example: Print the first few rows of the DataFrame
+    print(well_data.head())
+else:
+    print("Failed to load data from the uploaded file.")
+
+# Close the file when done
+uploadedfile.close()
 
 
 
