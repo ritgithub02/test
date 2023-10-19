@@ -6,13 +6,6 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-
-
-
-
-import lasio
-import streamlit as st
-
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
