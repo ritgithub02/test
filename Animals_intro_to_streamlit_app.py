@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Define the global variables for the DataFrame and column names
+# Define global variables for the DataFrame and column names
 well_df = None
 columns = []
 
@@ -47,19 +47,20 @@ selected_tab = st.radio("Select a tab:", ["Data Loading", "Formation Evaluation"
 
 if selected_tab == "Data Loading":
     st.title("Data Loading Tab")
-    
+
     if well_df is not None:
         st.write("Logs:")
         st.write(columns)
         st.write("Statistics:")
         st.write(well_df.describe())
+
 elif selected_tab == "Formation Evaluation":
     st.title("Formation Evaluation Tab")
-    # Add your content for this tab here
     st.write("Work in Progress... .  .  .   .    .")
+
 elif selected_tab == "Visualization":
     st.title("Visualization Tab")
-    
+
     if well_df is not None:
         st.title("Vshale Plot")
         gammaray = well_df['GR']
@@ -97,27 +98,27 @@ elif selected_tab == "Visualization":
                 ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
                 ax.invert_yaxis()
                 cold.pyplot(fig)
-            # Add other Vshale plot types here
 
         plot_vshale(vs)
 
         st.write('Work in Progress... .  .  .   .    .')
 
 
+
+
 elif selected_tab == "Visualization":
     st.title("Visualization Tab")
 
     if well_df is not None:
-        # Function to plot different types of charts
         def plot(well_df):
             cola, colb, colc = st.columns(3)
-            a = cola.radio('Plot type:', ['Line', 'Scatter', 'Histogram', 'Cross-plot'])
+            plot_type = cola.radio('Plot type:', ['Line Chart', 'Scatter Plot', 'Histogram', 'Cross-plot'])
 
-            if a == 'Line':
+            if plot_type == 'Line Chart':
                 curves = st.multiselect('Select Curves To Plot', columns)
 
-                if len(curves) <= 1:
-                    st.warning('Please select at least 2 curves.')
+                if len(curves) < 2:
+                    st.warning('Please select at least 2 curves for a line chart.')
                 else:
                     curve_index = 1
                     fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
@@ -125,59 +126,44 @@ elif selected_tab == "Visualization":
                         fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH'], mode='lines', name=curve), row=1, col=curve_index)
                         curve_index += 1
 
-                    fig.update_layout(height=1000, showlegend=True, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
+                    fig.update_layout(height=800, showlegend=True, yaxis={'title': 'Depth (m)', 'autorange': 'reversed'})
                     fig.update_layout(template='seaborn')
                     st.plotly_chart(fig, use_container_width=True)
 
-            elif a == 'Scatter':
+            elif plot_type == 'Scatter Plot':
                 curves = colb.multiselect('Select Curves To Plot', columns)
 
-                if len(curves) <= 1:
-                    st.warning('Please select at least 2 curves.')
+                if len(curves) < 2:
+                    st.warning('Please select at least 2 curves for a scatter plot.')
                 else:
-                    curve_index = 1
-                    fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
+                    scatter_fig = go.Figure()
                     for curve in curves:
-                        fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH']), row=1, col=curve_index)
-                        curve_index += 1
+                        scatter_fig.add_trace(go.Scatter(x=well_df[curve], y=well_df['DEPTH'], mode='markers', name=curve))
 
-                    fig.update_layout(height=1000, showlegend=False, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
-                    fig.update_layout(template='seaborn')
-                    st.plotly_chart(fig, use_container_width=True)
+                    scatter_fig.update_layout(height=800, showlegend=True, yaxis={'title': 'Depth (m)', 'autorange': 'reversed'})
+                    scatter_fig.update_layout(template='seaborn')
+                    st.plotly_chart(scatter_fig, use_container_width=True)
 
-            elif a == 'Histogram':
+            elif plot_type == 'Histogram':
                 hist_curve = colb.selectbox('Select a Curve', columns)
-                log_option = colb.radio('Select Linear or Logarithmic Scale', ('Linear', 'Logarithmic'))
-                hist_col = colc.color_picker('Select Histogram Colour')
+                log_option = colc.radio('Scale: Linear or Logarithmic', ('Linear', 'Logarithmic'))
+                hist_col = colc.color_picker('Select Histogram Color')
 
                 if log_option == 'Linear':
                     log_bool = False
-                elif log_option == 'Logarithmic':
+                else:
                     log_bool = True
 
-                histogram = px.histogram(well_df, x=hist_curve, log_x=log_bool)
-                histogram.update_traces(marker_color=hist_col)
+                histogram = px.histogram(well_df, x=hist_curve, log_x=log_bool, color_discrete_sequence=[hist_col])
                 histogram.update_layout(template='seaborn')
                 st.plotly_chart(histogram, use_container_width=True)
 
-            elif a == 'Cross-plot':
+            elif plot_type == 'Cross-plot':
                 xplot_x = colb.selectbox('X-Axis', columns)
-                xplot_x_log = colb.radio('X Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))
-                if xplot_x_log == 'Linear':
-                    xplot_x_bool = False
-                elif xplot_x_log == 'Logarithmic':
-                    xplot_x_bool = True
-
                 xplot_y = colc.selectbox('Y-Axis', columns)
-                xplot_y_log = colc.radio('Y Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))
-                if xplot_y_log == 'Linear':
-                    xplot_y_bool = False
-                elif xplot_y_log == 'Logarithmic':
-                    xplot_y_bool = True
 
-                xplot_col = st.selectbox('Colour-Bar', columns)
-                xplot = px.scatter(well_df, x=xplot_x, y=xplot_y, color=xplot_col, log_x=xplot_x_bool, log_y=xplot_y_bool)
-                xplot.update_layout(template='seaborn')
-                st.plotly_chart(xplot, use_container_width=True)
+                cross_plot = px.scatter(well_df, x=xplot_x, y=xplot_y, color='DEPTH', color_continuous_scale=px.colors.sequential.Viridis)
+                cross_plot.update_layout(template='seaborn')
+                st.plotly_chart(cross_plot, use_container_width=True)
 
         plot(well_df)
