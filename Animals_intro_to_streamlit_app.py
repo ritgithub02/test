@@ -1,19 +1,20 @@
 import numpy as np
 import pandas as pd
-import lasio  # las files
+import lasio 
 import matplotlib.pyplot as plt
 import streamlit as st
 
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+import plotly.express as px
+import plotly.subplots
+from PIL import Image
+import missingno as msno
 
 
 
 
-
-
-
-
-
-
+# ------------------------------------------------------------------------------------
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
@@ -64,6 +65,10 @@ if __name__ == "__main__":
         st.write(well_data.describe())
         st.write(well_data['DTCO'])
         st.write(well_df=well_data.copy())
+# --------------------------------------------------------------------------------------------------
+
+
+st.write(well_df.describe())
 
 
 
@@ -74,11 +79,7 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
+# ------------------------------------------------------------------------------------------
 # # Define the load_data function
 # def load_data(uploadedfile):
 #     if uploadedfile:
@@ -121,6 +122,7 @@ if __name__ == "__main__":
 # if __name__ == "__main__":
 #     main()
 
+# ----------------------------------------------------------------------------------
 
 
 
@@ -139,21 +141,6 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-# import streamlit as st
-# import pandas as pd
-# import lasio
-# from plotly.subplots import make_subplots
-# import plotly.graph_objects as go
-# import plotly.express as px
-# import numpy as np
-# import plotly.subplots
-# import matplotlib.pyplot as plt
-# from PIL import Image
-# import missingno as msno
 
 
 
@@ -184,31 +171,9 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # st.title('Formation Evaluation')
 # image = Image.open("psd1.jpg")
 # st.image(image, caption="", use_column_width=True)
-
-
 
 
 
@@ -218,16 +183,32 @@ if __name__ == "__main__":
 
 # well_df = well_data.df()
 # well_df=well_df.reset_index()
-
 # columns= well_df.columns
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # tab_a,tab_b, tab_c =st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization' ])
 
 # with tab_a:
-
-
-
 #     st.subheader("Upload LAS File")
 #     uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 #     def display_las_data(uploaded_file):
