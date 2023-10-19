@@ -4,43 +4,48 @@ import lasio  # las files
 import matplotlib.pyplot as plt
 
 import streamlit as st
-@st.cache
+
+# Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
-        uploadedfile.seek(0)  #RZ: reset buffer to beginning each time
+        uploadedfile.seek(0)  # Reset buffer to the beginning each time
         string = uploadedfile.read().decode()
         las_file = lasio.read(string)
 
-        # Create the dataframe
+        # Create the DataFrame
         well_data = las_file.df()
 
-        #Assign the dataframe index to a curve
+        # Assign the DataFrame index to a curve
         well_data['DEPTH'] = well_data.index
     else:
-        las_file=None
-        well_data=None
-    
+        las_file = None
+        well_data = None
+
     return las_file, well_data
 
+# Create a Streamlit app
+def main():
+    st.title("LAS File Viewer")
 
+    # Upload a LAS file
+    uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 
+    if uploaded_file is not None:
+        st.write("File Details:")
+        st.write("Name:", uploaded_file.name)
+        st.write("Type:", uploaded_file.type)
+        st.write("Size:", uploaded_file.size, "bytes")
 
+        # Call the load_data function
+        las_file, well_data = load_data(uploaded_file)
 
-uploadedfile = open('yourfile.las', 'rb')  # Open the LAS file in binary read mode
-las_file, well_data = load_data(uploadedfile)
+        if las_file is not None:
+            st.success("LAS file loaded successfully.")
+            st.write("Well Data:")
+            st.write(well_data)
 
-if las_file is not None:
-    # Process the LAS file or well_data as needed
-    # Example: Print the first few rows of the DataFrame
-    print(well_data.head())
-else:
-    print("Failed to load data from the uploaded file.")
-
-# Close the file when done
-uploadedfile.close()
-
-
-
+if __name__ == "__main__":
+    main()
 
 
 
