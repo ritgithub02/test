@@ -72,17 +72,17 @@ if __name__ == "__main__":
 
 
 
-# Read the CSV file for further processing
-ui = pd.read_csv('al.csv')
+# # Read the CSV file for further processing
+# ui = pd.read_csv('al.csv')
 
-# Display the summary statistics of the loaded data
-st.write(ui.describe())
+# # Display the summary statistics of the loaded data
+# st.write(ui.describe())
 
-    well_data = pd.read_csv(upload_file)
-    well_df = well_data.df()
-    well_df=well_df.dropna()
-    well_df=well_df.reset_index()
-    columns= well_df.columns
+#     well_data = pd.read_csv(upload_file)
+#     well_df = well_data.df()
+#     well_df=well_df.dropna()
+#     well_df=well_df.reset_index()
+#     columns= well_df.columns
 
 
 # ------------------------------------------------------------------------------------------
