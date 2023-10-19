@@ -102,7 +102,7 @@ if __name__ == "__main__":
         st.write(well_data.describe())
         st.write(well_data['DTCO'])
         st.write(well_df=well_data.copy())
-        well_data.to_csv('al.csv')
+        well_data.to_csv('al.csv',index=False)
 # --------------------------------------------------------------------------------------------------
 
 
