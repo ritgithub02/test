@@ -4,19 +4,24 @@ import lasio  # las files
 import matplotlib.pyplot as plt
 
 import streamlit as st
+import streamlit as st
+import pandas as pd
+import lasio
+
+
 
 # Create file uploader object
 upload_file = st.file_uploader('Upload a file for prediction', type=['csv', 'las'])
 rt0 = None  # Initialize rt0 as None
 
-# Load the CSV or LAS file into a Pandas DataFrame
+# Load the uploaded file into a Pandas DataFrame
 if upload_file is not None:
-    if upload_file.name.endswith('.csv'):
+    file_extension = upload_file.name.split('.')[-1].lower()
+    if file_extension == 'csv':
         rt0 = pd.read_csv(upload_file)
-    elif upload_file.name.endswith('.las'):
-        # You can implement LAS file parsing logic here
-        # Replace the next line with the code to parse LAS files into a DataFrame
-        st.error("LAS file parsing is not implemented yet. Please upload a CSV file.")
+    elif file_extension == 'las':
+        las_file = lasio.read(upload_file)
+        rt0 = las_file.df()
     rt0 = rt0.dropna()
 
 st.title('Data')
@@ -36,8 +41,6 @@ if rt0 is not None:
     st.header("Choose Target")
     selected_t = st.selectbox("Select a Target", rt.columns)
     button6 = st.button("Submit")
-
-
 
 
 
