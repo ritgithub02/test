@@ -1,22 +1,10 @@
-import streamlit as st
-import pandas as pd
-import lasio
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-import plotly.express as px
 import numpy as np
-import plotly.subplots
+import pandas as pd
+import lasio  # las files
 import matplotlib.pyplot as plt
-from PIL import Image
-import missingno as msno
 
+import streamlit as st
 
-
-
-
-
-
-# ------------------------------------------------
 
 # Create file uploader object
 upload_file = st.file_uploader('Upload a file for prediction', type=['csv'])
@@ -24,15 +12,97 @@ rt0 = None  # Initialize rt0 as None
 
 # Load the CSV file into a Pandas DataFrame
 if upload_file is not None:
-    well_data = pd.read_csv(upload_file)
-    well_df = well_data.df()
-    well_df=well_df.dropna()
-    well_df=well_df.reset_index()
-    columns= well_df.columns
+    rt0 = pd.read_csv(upload_file)
+    rt0=rt0.dropna()
+
+st.title('Data')
+
+# Initialize selected_columns and selected_t to None
+selected_columns = None
+selected_t = None
+
+# Check if rt0 is not None (file is uploaded)
+if rt0 is not None:
+    selected_columns = st.multiselect('Select columns to display:', rt0.columns)
+    rt = rt0[selected_columns] if selected_columns else rt0
+
+    st.write(rt.describe())
+
+    # Header for selecting a target column
+    st.header("Choose Target")
+    selected_t = st.selectbox("Select a Target", rt.columns)
+    button6 = st.button("Submit")
 
 
 
-# --------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import streamlit as st
+# import pandas as pd
+# import lasio
+# from plotly.subplots import make_subplots
+# import plotly.graph_objects as go
+# import plotly.express as px
+# import numpy as np
+# import plotly.subplots
+# import matplotlib.pyplot as plt
+# from PIL import Image
+# import missingno as msno
+
+
+
+
+
+
+
+# # ------------------------------------------------
+
+# # Create file uploader object
+# upload_file = st.file_uploader('Upload a file for prediction', type=['csv'])
+# rt0 = None  # Initialize rt0 as None
+
+# # Load the CSV file into a Pandas DataFrame
+# if upload_file is not None:
+#     well_data = pd.read_csv(upload_file)
+#     well_df = well_data.df()
+#     well_df=well_df.dropna()
+#     well_df=well_df.reset_index()
+#     columns= well_df.columns
+
+
+
+# # --------------------------------------------------------------------
 
 
 
