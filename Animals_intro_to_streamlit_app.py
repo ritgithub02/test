@@ -16,7 +16,6 @@ import streamlit as st
 
 
 
-
 # Define the load_data function
 def load_data(uploadedfile):
     if uploadedfile:
@@ -28,7 +27,7 @@ def load_data(uploadedfile):
         well_data = las_file.df()
 
         # Assign the DataFrame index to a curve
-        well_data['DEPTH'] = well_data.index.astype(bool)
+        # well_data['DEPTH'] = well_data.index.astype(bool)
     else:
         las_file = None
         well_data = None
@@ -52,15 +51,19 @@ def main():
         las_file, well_data = load_data(uploaded_file)
 
         if las_file is not None:
-            st.success("LAS file loaded successfully.")
+            st.success("LAS file loaded successfully")
             st.write("Well Data:")
             st.write(well_data)
 
+    # Return well_data from the main function
+    return well_data
+
 if __name__ == "__main__":
-    main()
+    well_data = main()
     if well_data is not None:
-        # well_data.reset_index(inplace=True)
+        well_data.reset_index(inplace=True)
         st.write(well_data)
+
 
 
 
