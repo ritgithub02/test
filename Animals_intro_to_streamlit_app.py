@@ -99,7 +99,7 @@ with t1:
 
 
     # well_df= pd.read_csv('io.csv')
-    # columns=well_df.columns
+    # # columns=well_df.columns
     else:
         st.write("Well data is None")
     
