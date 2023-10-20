@@ -107,7 +107,7 @@ with t1:
                 # Your Streamlit application code that may raise errors goes here
                 well_data = main()
             except UnboundLocalError as e:
-                st.error("An error occurred. Please try again later.")
+                st.error("UnboundLocalError: This app has encountered an error. The original error message is redacted to prevent data leaks. Full error details have been recorded in the logs (if you're on Streamlit Cloud, click on 'Manage app' in the lower right of your app).")
                 # Log the actual error to the application logs for debugging
                 st.exception(e)
             else:
