@@ -32,13 +32,16 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 with t1:
     # st.title("Data Loading")
     st.write('NOTE:  Error may persist until the file is successfully uploaded', color='red')
+
+
+
+    # Define a function to load data from the uploaded LAS file
     def load_data(uploadedfile):
         if uploadedfile:
-            uploadedfile.seek(0) 
-            string = uploadedfile.read().decode()
-            las_file = lasio.read(string)
-
-            well_data = las_file.df()
+            uploadedfile.seek(0)  # Ensure the file pointer is at the beginning
+            string = uploadedfile.read().decode()  # Read and decode the file
+            las_file = lasio.read(string)  # Use lasio library to read LAS file
+            well_data = las_file.df()  # Convert LAS data to a DataFrame
         else:
             las_file = None
             well_data = None
@@ -47,47 +50,53 @@ with t1:
     
     # Create a Streamlit app
     def main():
-        st.title("")
+        st.title("LAS File Analysis")
     
         # Upload a LAS file
         uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
-
-        if uploaded_file is not None:
-                st.success("LAS file loaded successfully")
-                # st.write(well_data)
     
         if uploaded_file is not None:
+            st.success("LAS file loaded successfully")
+    
+            # Display file details
             st.write("---------------------------------------------------------")
             st.write("File Details:")
             st.write("Name:", uploaded_file.name)
             st.write("Type:", uploaded_file.type)
             st.write("Size:", uploaded_file.size, "bytes")
             st.write("---------------------------------------------------------")
-            # Call the load_data function
+    
+            # Call the load_data function to process the uploaded file
             las_file, well_data = load_data(uploaded_file)
     
-            # if las_file is not None:
-            #     st.success("LAS file loaded successfully")
-            #     # st.write(well_data)
-    
-        # Return well_data from the main function
-        return well_data
+            if las_file is not None:
+                st.write("Well Data:")
+                st.write(well_data)
+                st.write("Statistics:")
+                st.write(well_data.describe())
     
     if __name__ == "__main__":
-        well_data = main()
+        well_data = main()  # Run the Streamlit app
         if well_data is not None:
             well_data.reset_index(inplace=True)
             well_df = pd.DataFrame(well_data)
-            well_df.dropna()
-            columns=well_df.columns
+            columns = well_df.columns
             st.write("Well Data:")
             st.write(well_df)
             st.write("Statistics:")
             st.write(well_df.describe())
-            st.write("Data Availability:")
-            fig, ax = plt.subplots()
-            msno.matrix(well_df, ax=ax)
-            st.pyplot(fig)
+
+
+
+
+
+
+
+
+
+
+
+
 
     #         well_data.to_csv('io.csv')
     
