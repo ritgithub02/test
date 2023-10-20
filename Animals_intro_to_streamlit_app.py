@@ -91,19 +91,59 @@ with t1:
     else:
         st.write("Well data is None")
     
+
+
+
+
+
+
+
+    
+
+    if __name__ == "__main__":
+        well_data = main()
+        if well_data is not None:
+            try:
+                # Your Streamlit application code that may raise errors goes here
+                well_data = main()
+            except UnboundLocalError as e:
+                st.error("An error occurred. Please try again later.")
+                # Log the actual error to the application logs for debugging
+                st.exception(e)
+            else:
+                # If no error occurred, display the result or content
+                st.write("Result:", well_data)
+
+
+
+
+            
+            # well_data.reset_index(inplace=True)
+            # well_df = pd.DataFrame(well_data)
+            # columns=well_df.columns
+            # st.write("Well Data:")
+            # st.write(well_df)
+            # st.write("Statistics:")
+            # st.write(well_df.describe())
     
 
 
-try:
-    # Your Streamlit application code that may raise errors goes here
-    well_data = main()
-except UnboundLocalError as e:
-    st.error("An error occurred. Please try again later.")
-    # Log the actual error to the application logs for debugging
-    st.exception(e)
-else:
-    # If no error occurred, display the result or content
-    st.write("Result:", well_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 with t2:
     # st.title("Formation Evaluation")
