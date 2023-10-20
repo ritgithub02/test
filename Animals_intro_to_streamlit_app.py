@@ -30,30 +30,29 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
 with t1:
     # st.title("Data Loading")
-
-    def load_data(uploadedfile):
-        if uploadedfile:
-            uploadedfile.seek(0) 
-            string = uploadedfile.read().decode()
-            las_file = lasio.read(string)
-
-            well_data = las_file.df()
-        else:
-            las_file = None
-            well_data = None
+    def load_data(uploaded_file):
+        las_file = None
+        well_data = None
+    
+        if uploaded_file:
+            uploaded_file.seek(0)
+            try:
+                string = uploaded_file.read().decode()
+                las_file = lasio.read(string)
+                well_data = las_file.df()
+            except Exception as e:
+                st.error(f"Error loading LAS file: {str(e)}")
     
         return las_file, well_data
     
-    # Create a Streamlit app
     def main():
         st.title("")
     
         # Upload a LAS file
         uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
-
+    
         if uploaded_file is not None:
-                st.success("LAS file loaded successfully")
-                # st.write(well_data)
+            st.success("LAS file loaded successfully")
     
         if uploaded_file is not None:
             st.write("---------------------------------------------------------")
@@ -65,48 +64,27 @@ with t1:
             # Call the load_data function
             las_file, well_data = load_data(uploaded_file)
     
-            # if las_file is not None:
-            #     st.success("LAS file loaded successfully")
-            #     # st.write(well_data)
-
-
-
-
             if well_data is None:
                 st.write("Well data is None. Something went wrong during data loading.")
-
+            else:
+                st.success("LAS file loaded successfully")
+                # st.write(well_data)
+    
         return well_data
-
-
-
-
     
     if __name__ == "__main__":
         well_data = main()
         if well_data is not None:
             well_data.reset_index(inplace=True)
             well_df = pd.DataFrame(well_data)
-            columns=well_df.columns
+            columns = well_df.columns
             st.write("Well Data:")
             st.write(well_df)
             st.write("Statistics:")
             st.write(well_df.describe())
-
-
-        if well_data is None:
-            st.write("Well data is None. Something went wrong during data loading.")
-    #         well_data.to_csv('io.csv')
-
-
-    # well_df= pd.read_csv('io.csv')
-    # # columns=well_df.columns
-    else:
-        st.write("Well data is None")
+        else:
+            st.write("Well data is None")
     
-
-
-
-
 
 
 
