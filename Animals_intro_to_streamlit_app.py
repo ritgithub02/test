@@ -11,16 +11,16 @@ from PIL import Image
 import missingno as msno
 
 
-well_df=None
-well_data=None
-las_file=None
+# well_df=None
+# well_data=None
+# las_file=None
 
-# Other code above
+# # Other code above
 
-def main():
-    well_data = None
+# def main():
+#     well_data = None
 
-    return well_data
+#     return well_data
 
 
 st.title('Formation Evaluation')
