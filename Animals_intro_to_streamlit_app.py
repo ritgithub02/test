@@ -30,7 +30,8 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
 with t1:
     # st.title("Data Loading")
-   def load_data(uploadedfile):
+
+    def load_data(uploadedfile):
         if uploadedfile:
             uploadedfile.seek(0) 
             string = uploadedfile.read().decode()
@@ -67,12 +68,9 @@ with t1:
             # if las_file is not None:
             #     st.success("LAS file loaded successfully")
             #     # st.write(well_data)
-
+    
+        # Return well_data from the main function
         return well_data
-
-
-
-
     
     if __name__ == "__main__":
         well_data = main()
@@ -86,12 +84,11 @@ with t1:
             st.write(well_df.describe())
 
     #         well_data.to_csv('io.csv')
-
-
-    # well_df= pd.read_csv('io.csv')
-    # # columns=well_df.columns
     
-
+    
+    
+    # well_df= pd.read_csv('io.csv')
+    # columns=well_df.columns
 
 
 
