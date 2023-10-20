@@ -13,151 +13,78 @@ import missingno as msno
 
 
 
-
-# from pathlib import Path
-# import base64
-
-# def img_to_bytes(img_path):
-#     img_bytes = Path(img_path).read_bytes()
-#     encoded = base64.b64encode(img_bytes).decode()
-#     return encoded
-
-# def img_to_html(img_path, link=''):
-#     img_extension = Path(img_path).suffix  # Get the file extension (e.g., '.jpg')
-#     mime_type = f'image/{img_extension[1:]}'  # Remove the dot from the extension
-#     img_html = "<a href='{}'><img src='data:{mime_type};base64,{img_bytes}' class='img-fluid' width='729' height='238'>".format(
-#         link,
-#         mime_type=mime_type,
-#         img_bytes=img_to_bytes(img_path)
-#     )
-#     return img_html
-
-# st.markdown(img_to_html('Psd1.jpg'), unsafe_allow_html=True)
+st.title('Formation Evaluation')
 
 
+t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
+with t1:
+    # st.title("Data Loading")
 
+    def load_data(uploadedfile):
+        if uploadedfile:
+            uploadedfile.seek(0) 
+            string = uploadedfile.read().decode()
+            las_file = lasio.read(string)
 
+            well_data = las_file.df()
+        else:
+            las_file = None
+            well_data = None
+    
+        return las_file, well_data
+    
+    # Create a Streamlit app
+    def main():
+        st.title("")
+    
+        # Upload a LAS file
+        uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
 
-import lasio
-import streamlit as st
-
-# Define the load_data function
-def load_data(uploadedfile):
-    if uploadedfile:
-        uploadedfile.seek(0)  # Reset buffer to the beginning each time
-        string = uploadedfile.read().decode()
-        las_file = lasio.read(string)
-
-        # Create the DataFrame
-        well_data = las_file.df()
-
-        # Assign the DataFrame index to a curve
-        # well_data['DEPTH'] = well_data.index.astype(bool)
-    else:
-        las_file = None
-        well_data = None
-
-    return las_file, well_data
-
-# Create a Streamlit app
-def main():
-    st.title("LAS File Viewer")
-
-    # Upload a LAS file
-    uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
-
-    if uploaded_file is not None:
-        st.write("File Details:")
-        st.write("Name:", uploaded_file.name)
-        st.write("Type:", uploaded_file.type)
-        st.write("Size:", uploaded_file.size, "bytes")
-
-        # Call the load_data function
-        las_file, well_data = load_data(uploaded_file)
-
-        if las_file is not None:
-            st.success("LAS file loaded successfully")
+        if uploaded_file is not None:
+                st.success("LAS file loaded successfully")
+                # st.write(well_data)
+    
+        if uploaded_file is not None:
+            st.write("---------------------------------------------------------")
+            st.write("File Details:")
+            st.write("Name:", uploaded_file.name)
+            st.write("Type:", uploaded_file.type)
+            st.write("Size:", uploaded_file.size, "bytes")
+            st.write("---------------------------------------------------------")
+            # Call the load_data function
+            las_file, well_data = load_data(uploaded_file)
+    
+            # if las_file is not None:
+            #     st.success("LAS file loaded successfully")
+            #     # st.write(well_data)
+    
+        # Return well_data from the main function
+        return well_data
+    
+    if __name__ == "__main__":
+        well_data = main()
+        if well_data is not None:
+            well_data.reset_index(inplace=True)
+            well_df = pd.DataFrame(well_data)
+            columns=well_df.columns
             st.write("Well Data:")
-            st.write(well_data)
+            st.write(well_df)
+            st.write("Statistics:")
+            st.write(well_df.describe())
 
-    # Return well_data from the main function
-    return well_data
-
-if __name__ == "__main__":
-    well_data = main()
-    if well_data is not None:
-        well_data.reset_index(inplace=True)
-        st.write(well_data)
-        well_data.to_csv('io.csv')
-
-
-
-well_df= pd.read_csv('io.csv')
-columns=well_df.columns
-
-
-
-
-
-
-
-
-# st.title('Formation Evaluation')
-# image = Image.open("psd1.jpg")
-# st.image(image, caption="", use_column_width=True)
-
-
-# las_file_path = "D:\Case study\Gorgonichthys_1_suite3_supercombo_log.las"
-# well_data = lasio.read(las_file_path)
-# # columns = well_data.keys()
-
-# well_df = well_data.df()
-# well_df=well_df.reset_index()
-
-# columns= well_df.columns
-
-
-# selected_tab =st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization' ])
-
-selected_tab = st.radio("Select a tab:", ["Data Loading", "Formation Evaluation", "Visualization"])
-
-if selected_tab == "Data Loading":
-    st.title("Data Loading Tab")
-
-    # st.subheader("Upload LAS File")
-    # uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
-    # def display_las_data(uploaded_file):
-    #     if uploaded_file is not None:
-    #         las_data = lasio.read(uploaded_file)
-    #         st.header("LAS Header")
-    #         st.write(las_data.header)
+    #         well_data.to_csv('io.csv')
     
-    #         st.header("LAS Data")
-    #         st.write(las_data.df())
     
-    # # Check if a file has been uploaded
-    # if uploaded_file:
-    #     display_las_data(uploaded_file)
-    # else:
-    #     st.info("Please upload a LAS file.")
-    # # st.write('Missing Ranges :')
-    # # # st.write(msno.matrix(well_df))
-    # # st.pyplot(msno.matrix(well_df))
     
-    # st.write('Logs:')
-    # st.write(well_df.columns)
-    # st.write('Statistics:')
-    # st.write(well_df.describe())
-
-# if 'DEPTH' not in well_df.columns:
-#     well_df['DEPTH'] = well_data['DEPTH']
-#     # st.write(columns)
+    # well_df= pd.read_csv('io.csv')
+    # columns=well_df.columns
 
 
 
-elif selected_tab == "Formation Evaluation":
-    st.title("Formation Evaluation Tab")
+
+with t2:
+    # st.title("Formation Evaluation")
     st.title("Vshale Plot")
     gammaray=well_df['GR']
     # st.write('Work in Progress... .  .  .   .    .')
@@ -188,8 +115,6 @@ elif selected_tab == "Formation Evaluation":
         print("Invalid input. Please enter valid percentile values (0-100).")
 
 
-    
-    # Create a selectbox for choosing the Vshale type
     vs = st.selectbox('Vshale type', ('Linear', 'Vsh_Larinor_older', 'Vsh_Larinor_tertiary', 'Vsh_clavier'))
     cold,cole=st.columns(2)
     # Define a function to plot the selected Vshale type
@@ -233,8 +158,7 @@ elif selected_tab == "Formation Evaluation":
             ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
             ax.invert_yaxis()
             cold.pyplot(fig)
-    
-    # Call the function to display the selected plot
+
     plot_vshale(vs)
 
     st.write('Work in Progress... .  .  .   .    .')
@@ -242,41 +166,8 @@ elif selected_tab == "Formation Evaluation":
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-elif selected_tab == "Visualization":
-    st.title("Visualization Tab")
+with t3:
+    # st.title("Visualization")
 
     def plot(well_data):
         cola, colb, colc = st.columns(3)
@@ -285,10 +176,10 @@ elif selected_tab == "Visualization":
 
         
         if a == 'Line':
-            curves = st.multiselect('Select Curves To Plot', columns)
+            curves = colb.multiselect('Select Curves To Plot', columns)
 
             if len(curves) <= 1:
-                st.warning('Please select at least 2 curves.')
+                colc.warning('Please select at least 2 curves.')
             else:
                 curve_index = 1
                 fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
@@ -323,16 +214,16 @@ elif selected_tab == "Visualization":
             # col1_h, col2_h = st.columns(2)
             # colb.header('Op')
             hist_curve = colb.selectbox('Select a Curve', columns)
-            log_option = colb.radio('Select Linear or Logarithmic Scale', ('Linear', 'Logarithmic'))
+            # log_option = colb.radio('Select Linear or Logarithmic Scale', ('Linear', 'Logarithmic'))
             hist_col = colc.color_picker('Select Histogram Colour')
             # st.write('Color is ' + hist_col)
             
-            if log_option == 'Linear':
-                log_bool = False
-            elif log_option == 'Logarithmic':
-                log_bool = True
-            st.write(well_data)
-            histogram = px.histogram(well_df, x=hist_curve, log_x=log_bool)
+            # if log_option == 'Linear':
+            #     log_bool = False
+            # elif log_option == 'Logarithmic':
+            #     log_bool = True
+            # st.write(well_data)
+            histogram = px.histogram(well_df, x=hist_curve, log_x=False)
             histogram.update_traces(marker_color=hist_col)
             histogram.update_layout(template='seaborn')
             st.plotly_chart(histogram, use_container_width=True)
@@ -359,8 +250,4 @@ elif selected_tab == "Visualization":
             xplot = px.scatter(well_df, x=xplot_x, y=xplot_y, color=xplot_col, log_x=xplot_x_bool, log_y=xplot_y_bool)
             xplot.update_layout(template='seaborn')
             st.plotly_chart(xplot, use_container_width=True)
-
-# Ensure 'xplot_col' is defined outside of the 'if' block if needed elsewhere in your code.
-
-
     plot(well_data)
