@@ -13,7 +13,7 @@ import missingno as msno
 
 
 
-st.header('Formation Evaluation')
+st.title('Formation Evaluation')
 
 
 t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
@@ -85,7 +85,7 @@ with t1:
 
 with t2:
     # st.title("Formation Evaluation")
-    st.title("Vshale Plot")
+    st.subheader("Vshale Plot")
     gammaray=well_df['GR']
     # st.write('Work in Progress... .  .  .   .    .')
     # st.title("Work in Progress... .  .  .   .    .")
