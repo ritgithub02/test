@@ -17,16 +17,16 @@ from io import BytesIO
 
 image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Psd1.jpg"
 response = requests.get(image_url)
-
 if response.status_code == 200:
-    Image.open(BytesIO(response.content)).show()
+    image = Image.open(BytesIO(response.content))
+    st.image(image, caption='Formation Evaluation Image')
 else:
-    print(f"Failed to fetch the image. Status code: {response.status_code}")
+    st.write(f"Failed to fetch the image. Status code: {response.status_code}")
+
 
 
 
 st.title('Formation Evaluation')
-
 
 t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
