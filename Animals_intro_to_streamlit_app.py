@@ -68,9 +68,18 @@ with t1:
             # if las_file is not None:
             #     st.success("LAS file loaded successfully")
             #     # st.write(well_data)
-    
-        # Return well_data from the main function
+
+
+
+
+            if well_data is None:
+                st.write("Well data is None. Something went wrong during data loading.")
+
         return well_data
+
+
+
+
     
     if __name__ == "__main__":
         well_data = main()
