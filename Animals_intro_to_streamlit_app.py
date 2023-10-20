@@ -106,7 +106,7 @@ with t1:
     # columns=well_df.columns
 
 
-if well_df == None:
+if uploaded_file is not None:
     st.write('error')
 else:
     with t2:
