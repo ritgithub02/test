@@ -11,7 +11,9 @@ from PIL import Image
 import missingno as msno
 
 
-
+well_df=None
+well_data=None
+las_file=None
 
 st.title('Formation Evaluation')
 
@@ -85,7 +87,7 @@ with t1:
 
 with t2:
     # st.title("Formation Evaluation")
-    st.subheader("Vshale Plot")
+    st.markdown("Vshale Plot")
     gammaray=well_df['GR']
     # st.write('Work in Progress... .  .  .   .    .')
     # st.title("Work in Progress... .  .  .   .    .")
