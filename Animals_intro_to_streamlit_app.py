@@ -84,6 +84,8 @@ with t1:
             st.write(well_df.describe())
 
     #         well_data.to_csv('io.csv')
+    else:
+        st.write("Well data is None")
     
     
     
