@@ -72,59 +72,26 @@ with t1:
         # Return well_data from the main function
         return well_data
     
-    # if __name__ == "__main__":
-    #     well_data = main()
-    #     if well_data is not None:
-    #         well_data.reset_index(inplace=True)
-    #         well_df = pd.DataFrame(well_data)
-    #         columns=well_df.columns
-    #         st.write("Well Data:")
-    #         st.write(well_df)
-    #         st.write("Statistics:")
-    #         st.write(well_df.describe())
-
-    # #         well_data.to_csv('io.csv')
-
-
-    # # well_df= pd.read_csv('io.csv')
-    # # columns=well_df.columns
-    # else:
-    #     st.write("Well data is None")
-    
-
-
-
-
-
-
-
-    
-
-    def main():
-        # Your main function logic here
-        return well_data
-    
     if __name__ == "__main__":
-        try:
-            well_data = main()
-            if well_data is not None:
-                # Your Streamlit application code that may raise errors goes here
-                st.write("Result:", well_data)
-        except UnboundLocalError as e:
-            st.error("An error occurred: UnboundLocalError")
-            # Log the actual error to the application logs for debugging
-            st.exception(e)
+        well_data = main()
+        if well_data is not None:
+            well_data.reset_index(inplace=True)
+            well_df = pd.DataFrame(well_data)
+            columns=well_df.columns
+            st.write("Well Data:")
+            st.write(well_df)
+            st.write("Statistics:")
+            st.write(well_df.describe())
+
+    #         well_data.to_csv('io.csv')
 
 
-            
-            # well_data.reset_index(inplace=True)
-            # well_df = pd.DataFrame(well_data)
-            # columns=well_df.columns
-            # st.write("Well Data:")
-            # st.write(well_df)
-            # st.write("Statistics:")
-            # st.write(well_df.describe())
+    # well_df= pd.read_csv('io.csv')
+    # columns=well_df.columns
+    else:
+        st.write("Well data is None")
     
+
 
 
 
