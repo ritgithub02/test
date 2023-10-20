@@ -107,88 +107,87 @@ with t1:
 
 
 if well_df is None:
-    gammaray = None
-
-
-with t2:
-    # st.title("Formation Evaluation")
-    st.title("Vshale Plot")
-    gammaray=well_df['GR']
-    # st.write('Work in Progress... .  .  .   .    .')
-    # st.title("Work in Progress... .  .  .   .    .")
-    c1,c2= st.columns(2)
-    max_val_per = c2.text_input("Percentile for max GR:", value="95")
-    min_val_per = c1.text_input("Percentile for min GR:", value="5")
-
-
-    if max_val_per.replace('.', '', 1).isdigit() and min_val_per.replace('.', '', 1).isdigit():
-        max_val_per = float(max_val_per)
-        min_val_per = float(min_val_per)
-
-        if 0 <= min_val_per <= 100 and 0 <= max_val_per <= 100:
-            pmax = gammaray.quantile(max_val_per / 100)
-            pmin = gammaray.quantile(min_val_per / 100)
-
-            # Use the percentiles to calculate Vshale
-            Igr = (gammaray - pmin) / (pmax - pmin)
-            Vsh_linear=Igr
-            Vsh_Larinor_older=0.33*(2**(2*Igr)-1)
-            Vsh_Larinor_tertiary=0.083*(2**(3.7*Igr)-1)
-            Vsh_clavier = 1.7-(3.38-(Igr + 0.7)**2)** 0.5
-            
+    st.write('error')
+else:
+    with t2:
+        # st.title("Formation Evaluation")
+        st.title("Vshale Plot")
+        gammaray=well_df['GR']
+        # st.write('Work in Progress... .  .  .   .    .')
+        # st.title("Work in Progress... .  .  .   .    .")
+        c1,c2= st.columns(2)
+        max_val_per = c2.text_input("Percentile for max GR:", value="95")
+        min_val_per = c1.text_input("Percentile for min GR:", value="5")
+    
+    
+        if max_val_per.replace('.', '', 1).isdigit() and min_val_per.replace('.', '', 1).isdigit():
+            max_val_per = float(max_val_per)
+            min_val_per = float(min_val_per)
+    
+            if 0 <= min_val_per <= 100 and 0 <= max_val_per <= 100:
+                pmax = gammaray.quantile(max_val_per / 100)
+                pmin = gammaray.quantile(min_val_per / 100)
+    
+                # Use the percentiles to calculate Vshale
+                Igr = (gammaray - pmin) / (pmax - pmin)
+                Vsh_linear=Igr
+                Vsh_Larinor_older=0.33*(2**(2*Igr)-1)
+                Vsh_Larinor_tertiary=0.083*(2**(3.7*Igr)-1)
+                Vsh_clavier = 1.7-(3.38-(Igr + 0.7)**2)** 0.5
+                
+            else:
+                print("Percentile values should be between 0 and 100.")
         else:
-            print("Percentile values should be between 0 and 100.")
-    else:
-        print("Invalid input. Please enter valid percentile values (0-100).")
-
-
-    vs = st.selectbox('Vshale type', ('Linear', 'Vsh_Larinor_older', 'Vsh_Larinor_tertiary', 'Vsh_clavier'))
-    cold,cole=st.columns(2)
-    # Define a function to plot the selected Vshale type
-    def plot_vshale(vs):
-        if vs == 'Linear':
-            fig, ax = plt.subplots(figsize=(2, 5))
-            ax.plot(Vsh_linear, well_df.DEPTH, lw=0.5, color='teal')
-            ax.set_xlabel('Vsh Linear')
-            ax.set_ylabel('Depth (m)')
-            ax.set_xlabel('Vsh Linear', color='black', fontsize=11)
-            ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
-            ax.invert_yaxis()
-            cold.pyplot(fig)
+            print("Invalid input. Please enter valid percentile values (0-100).")
     
-        elif vs == 'Vsh_Larinor_older':
-            fig, ax = plt.subplots(figsize=(2, 5))
-            ax.plot(Vsh_Larinor_older, well_df.DEPTH, lw=0.5, color='green')
-            ax.set_xlabel('Vsh Larinor Older')
-            ax.set_ylabel('Depth (m)')
-            ax.set_xlabel('Vsh Larinor Older', color='green', fontsize=11)
-            ax.invert_yaxis()
-            ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
-            cold.pyplot(fig)
     
-        elif vs == 'Vsh_Larinor_tertiary':
-            fig, ax = plt.subplots(figsize=(2, 5))
-            ax.plot(Vsh_Larinor_tertiary, well_df.DEPTH, lw=0.5, color='magenta')
-            ax.set_xlabel('Vsh Larinor Tertiary')
-            ax.set_ylabel('Depth (m)')
-            ax.set_xlabel('Vsh Larinor Tertiary', color='magenta', fontsize=9)
-            ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
-            ax.invert_yaxis()
-            cold.pyplot(fig)
+        vs = st.selectbox('Vshale type', ('Linear', 'Vsh_Larinor_older', 'Vsh_Larinor_tertiary', 'Vsh_clavier'))
+        cold,cole=st.columns(2)
+        # Define a function to plot the selected Vshale type
+        def plot_vshale(vs):
+            if vs == 'Linear':
+                fig, ax = plt.subplots(figsize=(2, 5))
+                ax.plot(Vsh_linear, well_df.DEPTH, lw=0.5, color='teal')
+                ax.set_xlabel('Vsh Linear')
+                ax.set_ylabel('Depth (m)')
+                ax.set_xlabel('Vsh Linear', color='black', fontsize=11)
+                ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
+                ax.invert_yaxis()
+                cold.pyplot(fig)
+        
+            elif vs == 'Vsh_Larinor_older':
+                fig, ax = plt.subplots(figsize=(2, 5))
+                ax.plot(Vsh_Larinor_older, well_df.DEPTH, lw=0.5, color='green')
+                ax.set_xlabel('Vsh Larinor Older')
+                ax.set_ylabel('Depth (m)')
+                ax.set_xlabel('Vsh Larinor Older', color='green', fontsize=11)
+                ax.invert_yaxis()
+                ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
+                cold.pyplot(fig)
+        
+            elif vs == 'Vsh_Larinor_tertiary':
+                fig, ax = plt.subplots(figsize=(2, 5))
+                ax.plot(Vsh_Larinor_tertiary, well_df.DEPTH, lw=0.5, color='magenta')
+                ax.set_xlabel('Vsh Larinor Tertiary')
+                ax.set_ylabel('Depth (m)')
+                ax.set_xlabel('Vsh Larinor Tertiary', color='magenta', fontsize=9)
+                ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
+                ax.invert_yaxis()
+                cold.pyplot(fig)
+        
+            elif vs == 'Vsh_clavier':
+                fig, ax = plt.subplots(figsize=(2, 5))
+                ax.plot(Vsh_clavier, well_df.DEPTH, lw=0.5, color='c')
+                ax.set_xlabel('Vsh Clavier')
+                ax.set_ylabel('Depth (m)')
+                ax.set_xlabel('Vsh Clavier', color='c', fontsize=11)
+                ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
+                ax.invert_yaxis()
+                cold.pyplot(fig)
     
-        elif vs == 'Vsh_clavier':
-            fig, ax = plt.subplots(figsize=(2, 5))
-            ax.plot(Vsh_clavier, well_df.DEPTH, lw=0.5, color='c')
-            ax.set_xlabel('Vsh Clavier')
-            ax.set_ylabel('Depth (m)')
-            ax.set_xlabel('Vsh Clavier', color='c', fontsize=11)
-            ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
-            ax.invert_yaxis()
-            cold.pyplot(fig)
-
-    plot_vshale(vs)
-
-    st.write('Work in Progress... .  .  .   .    .')
+        plot_vshale(vs)
+    
+        st.write('Work in Progress... .  .  .   .    .')
 
 
 
