@@ -13,7 +13,7 @@ import missingno as msno
 
 
 
-st.title('Formation Evaluation')
+st.header('Formation Evaluation')
 
 
 t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
