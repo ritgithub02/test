@@ -84,16 +84,26 @@ with t1:
             st.write(well_df.describe())
 
     #         well_data.to_csv('io.csv')
+
+
+    # well_df= pd.read_csv('io.csv')
+    # columns=well_df.columns
     else:
         st.write("Well data is None")
     
     
-    
-    # well_df= pd.read_csv('io.csv')
-    # columns=well_df.columns
 
 
-
+try:
+    # Your Streamlit application code that may raise errors goes here
+    well_data = main()
+except UnboundLocalError as e:
+    st.error("An error occurred. Please try again later.")
+    # Log the actual error to the application logs for debugging
+    st.exception(e)
+else:
+    # If no error occurred, display the result or content
+    st.write("Result:", well_data)
 
 with t2:
     # st.title("Formation Evaluation")
