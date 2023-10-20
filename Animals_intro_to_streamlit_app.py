@@ -106,7 +106,8 @@ with t1:
     # columns=well_df.columns
 
 
-
+if well_df= None:
+    gammaray= None
 
 with t2:
     # st.title("Formation Evaluation")
