@@ -100,20 +100,20 @@ with t1:
 
     
 
+    def main():
+        # Your main function logic here
+        return well_data
+    
     if __name__ == "__main__":
-        well_data = main()
-        if well_data is not None:
-            try:
+        try:
+            well_data = main()
+            if well_data is not None:
                 # Your Streamlit application code that may raise errors goes here
-                well_data = main()
-            except UnboundLocalError as e:
-                st.error("UnboundLocalError: This app has encountered an error. The original error message is redacted to prevent data leaks. Full error details have been recorded in the logs (if you're on Streamlit Cloud, click on 'Manage app' in the lower right of your app).")
-                # Log the actual error to the application logs for debugging
-                st.exception(e)
-            else:
-                # If no error occurred, display the result or content
                 st.write("Result:", well_data)
-
+        except UnboundLocalError as e:
+            st.error("An error occurred: UnboundLocalError")
+            # Log the actual error to the application logs for debugging
+            st.exception(e)
 
 
 
