@@ -19,7 +19,7 @@ image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Psd1.jpg"
 response = requests.get(image_url)
 if response.status_code == 200:
     image = Image.open(BytesIO(response.content))
-    st.image(image, caption='Formation Evaluation Image')
+    st.image(image, caption='')
 else:
     st.write(f"Failed to fetch the image. Status code: {response.status_code}")
 
