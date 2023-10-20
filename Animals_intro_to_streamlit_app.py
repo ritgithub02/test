@@ -11,16 +11,18 @@ from PIL import Image
 import missingno as msno
 
 
-# well_df=None
-# well_data=None
-# las_file=None
+import requests
+from PIL import Image
+from io import BytesIO
 
-# # Other code above
+image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Psd1.jpg"
+response = requests.get(image_url)
 
-# def main():
-#     well_data = None
+if response.status_code == 200:
+    Image.open(BytesIO(response.content)).show()
+else:
+    print(f"Failed to fetch the image. Status code: {response.status_code}")
 
-#     return well_data
 
 
 st.title('Formation Evaluation')
@@ -93,20 +95,9 @@ with t1:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 with t2:
     # st.title("Formation Evaluation")
-    st.markdown("Vshale Plot")
+    st.title("Vshale Plot")
     gammaray=well_df['GR']
     # st.write('Work in Progress... .  .  .   .    .')
     # st.title("Work in Progress... .  .  .   .    .")
@@ -197,47 +188,71 @@ with t3:
 
         
         if a == 'Line':
-            curves = colb.multiselect('Select Curves To Plot', columns)
-
-            if len(curves) <= 1:
-                colc.warning('Please select at least 2 curves.')
-            else:
-                curve_index = 1
-                fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
-                for curve in curves:
-                    fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH'], mode='lines', name=curve), row=1, col=curve_index)
-                    curve_index += 1
-        
-                fig.update_layout(height=1000, showlegend=True, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
-                fig.update_layout(template='seaborn')
-                st.plotly_chart(fig, use_container_width=True)
-
-        
-        
-        if a == 'Scatter':
-            curves = colb.multiselect('Select Curves To Plot', columns)
+            curves = colb.multiselect('Select Curves To Plot', columns , key="multiselect1")
+            LG= colc.multiselect('Log plot of:',columns, key="multiselect2")
             
             if len(curves) <= 1:
                 st.warning('Please select at least 2 curves.')
             else:
                 curve_index = 1
                 fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
+            
                 for curve in curves:
-                    fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH']), row=1, col=curve_index)
+                    if curve in LG:
+                        log_bool = 'log'
+                    else:
+                        log_bool = 'linear'
+                    fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH'], mode='lines'), row=1, col=curve_index)
+                    # Set x-axis to log scale
+                    fig.update_xaxes(type=log_bool, row=1, col=curve_index)
                     curve_index += 1
-    
+        
                 fig.update_layout(height=1000, showlegend=False, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
-                fig.update_layout(template='seaborn')
+                
+                # Change the plot style family (template)
+                fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
+        
                 st.plotly_chart(fig, use_container_width=True)
+
+
+        if a == 'Scatter':
+            curves = colb.multiselect('Select Curves To Plot', columns, key="multiselect1")
+            LG= colc.multiselect('Log Plot Of:',columns, key="multiselect2")
+            
+            if len(curves) <= 1:
+                st.warning('Please select at least 2 curves.')
+            else:
+                curve_index = 1
+                fig = make_subplots(rows=1, cols=len(curves), subplot_titles=curves, shared_yaxes=True)
+            
+                for curve in curves:
+                    if curve in LG:
+                        log_bool = 'log'
+                    else:
+                        log_bool = 'linear'
+                    fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH'], mode='markers', marker={'size': 4}), row=1, col=curve_index)
+                    # Set x-axis to log scale
+                    fig.update_xaxes(type=log_bool, row=1, col=curve_index)
+                    curve_index += 1
+        
+                fig.update_layout(height=1000, showlegend=False, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
+                
+                # Change the plot style family (template)
+                fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
+        
+                st.plotly_chart(fig, use_container_width=True)
+
+
+
                 
                 
         if a == 'Histogram':
             # col1_h, col2_h = st.columns(2)
             # colb.header('Op')
-            hist_curve = colb.selectbox('Select a Curve', columns)
+            hist_curve = colb.selectbox('Select a Curve', columns, index=2)
             # log_option = colb.radio('Select Linear or Logarithmic Scale', ('Linear', 'Logarithmic'))
-            hist_col = colc.color_picker('Select Histogram Colour')
-            # st.write('Color is ' + hist_col)
+            hist_col = colc.color_picker('Select Histogram Colour', value='#1aa2aa')
+            # colc.write('Color:  ' + hist_col)
             
             # if log_option == 'Linear':
             #     log_bool = False
@@ -246,12 +261,12 @@ with t3:
             # st.write(well_data)
             histogram = px.histogram(well_df, x=hist_curve, log_x=False)
             histogram.update_traces(marker_color=hist_col)
-            histogram.update_layout(template='seaborn')
+            histogram.update_layout(template='plotly_dark')
             st.plotly_chart(histogram, use_container_width=True)
             
         if a == 'Cross-plot':
             colb.write('')
-            xplot_x = colb.selectbox('X-Axis', columns)
+            xplot_x = colb.selectbox('X-Axis', columns,index=1)
             xplot_x_log = colb.radio('X Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))
             if xplot_x_log == 'Linear':
                 xplot_x_bool = False
@@ -259,7 +274,7 @@ with t3:
                 xplot_x_bool = True
         
             colc.write('')
-            xplot_y = colc.selectbox('Y-Axis', columns)  # Change 'col1' to 'col2'
+            xplot_y = colc.selectbox('Y-Axis', columns,index=2)  # Change 'col1' to 'col2'
             xplot_y_log = colc.radio('Y Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))  # Change 'col1' to 'col2'
             if xplot_y_log == 'Linear':
                 xplot_y_bool = False
@@ -267,8 +282,8 @@ with t3:
                 xplot_y_bool = True
         
 
-            xplot_col = st.selectbox('Colour-Bar', columns)
+            xplot_col = st.selectbox('Colour-Bar', columns,index=0)
             xplot = px.scatter(well_df, x=xplot_x, y=xplot_y, color=xplot_col, log_x=xplot_x_bool, log_y=xplot_y_bool)
-            xplot.update_layout(template='seaborn')
+            xplot.update_layout(template='plotly_dark')
             st.plotly_chart(xplot, use_container_width=True)
     plot(well_data)
