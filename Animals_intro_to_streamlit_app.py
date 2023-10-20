@@ -116,7 +116,6 @@ with t1:
             st.exception(e)
 
 
-
             
             # well_data.reset_index(inplace=True)
             # well_df = pd.DataFrame(well_data)
