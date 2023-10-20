@@ -68,12 +68,6 @@ with t1:
             #     st.success("LAS file loaded successfully")
             #     # st.write(well_data)
 
-
-
-
-            if well_data is None:
-                st.write("Well data is None. Something went wrong during data loading.")
-
         return well_data
 
 
@@ -91,17 +85,11 @@ with t1:
             st.write("Statistics:")
             st.write(well_df.describe())
 
-
-        if well_data is None:
-            st.write("Well data is None. Something went wrong during data loading.")
     #         well_data.to_csv('io.csv')
 
 
     # well_df= pd.read_csv('io.csv')
     # # columns=well_df.columns
-    else:
-        st.write("Well data is None")
-    
     
 
 
