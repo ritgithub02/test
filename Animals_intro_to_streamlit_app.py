@@ -32,12 +32,11 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 with t1:
     # st.title("Data Loading")
     st.write('NOTE:  Error may persist until the file is successfully uploaded', color='red')
-    def load_data(uploadedfile):
+ def load_data(uploadedfile):
         if uploadedfile:
-            uploadedfile.seek(0) 
+            uploadedfile.seek(0)
             string = uploadedfile.read().decode()
             las_file = lasio.read(string)
-
             well_data = las_file.df()
         else:
             las_file = None
@@ -47,31 +46,25 @@ with t1:
     
     # Create a Streamlit app
     def main():
-        st.title("")
+        st.title("LAS File Viewer")
+        well_data = None  # Initialize well_data with None
     
         # Upload a LAS file
         uploaded_file = st.file_uploader("Upload a LAS file", type=["las", "LAS"])
-
-        if uploaded_file is not None:
-                st.success("LAS file loaded successfully")
-                # st.write(well_data)
     
         if uploaded_file is not None:
-            st.write("---------------------------------------------------------")
-            st.write("File Details:")
-            st.write("Name:", uploaded_file.name)
-            st.write("Type:", uploaded_file.type)
-            st.write("Size:", uploaded_file.size, "bytes")
-            st.write("---------------------------------------------------------")
-            # Call the load_data function
+            st.success("LAS file loaded successfully")
             las_file, well_data = load_data(uploaded_file)
     
-            # if las_file is not None:
-            #     st.success("LAS file loaded successfully")
-            #     # st.write(well_data)
-    
-        # Return well_data from the main function
-        return well_data
+            if las_file is not None:
+                well_data.reset_index(inplace=True)
+                well_df = pd.DataFrame(well_data)
+                columns = well_df.columns
+                st.write("Well Data:")
+                st.write(well_df)
+                st.write("Statistics:")
+                st.write(well_df.describe())
+
     
     if __name__ == "__main__":
         well_data = main()
