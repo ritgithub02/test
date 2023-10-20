@@ -103,9 +103,9 @@ columns=well_df.columns
 
 
 
-st.title('Formation Evaluation')
-image = Image.open("psd1.jpg")
-st.image(image, caption="", use_column_width=True)
+# st.title('Formation Evaluation')
+# image = Image.open("psd1.jpg")
+# st.image(image, caption="", use_column_width=True)
 
 
 # las_file_path = "D:\Case study\Gorgonichthys_1_suite3_supercombo_log.las"
