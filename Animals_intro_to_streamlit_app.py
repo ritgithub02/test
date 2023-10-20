@@ -1,3 +1,5 @@
+pip install --upgrade streamlit
+
 import numpy as np
 import pandas as pd
 import lasio
