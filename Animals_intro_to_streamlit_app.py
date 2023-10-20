@@ -15,6 +15,14 @@ well_df=None
 well_data=None
 las_file=None
 
+# Other code above
+
+def main():
+    well_data = None
+
+    return well_data
+
+
 st.title('Formation Evaluation')
 
 
