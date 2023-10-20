@@ -32,7 +32,7 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
 with t1:
     # st.title("Data Loading")
-
+    st.write('NOTE:  Error may persist until the file is successfully uploaded')
     def load_data(uploadedfile):
         if uploadedfile:
             uploadedfile.seek(0) 
