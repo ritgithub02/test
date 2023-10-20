@@ -15,6 +15,8 @@ import requests
 from PIL import Image
 from io import BytesIO
 
+
+
 image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Psd1.jpg"
 response = requests.get(image_url)
 if response.status_code == 200:
@@ -23,16 +25,13 @@ if response.status_code == 200:
 else:
     st.write(f"Failed to fetch the image. Status code: {response.status_code}")
 
-
-
-
 st.title('Formation Evaluation')
 
 t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
 with t1:
     # st.title("Data Loading")
-    st.write('NOTE:  Error may persist until the file is successfully uploaded')
+    st.write('NOTE:  Error may persist until the file is successfully uploaded', color='red')
     def load_data(uploadedfile):
         if uploadedfile:
             uploadedfile.seek(0) 
@@ -79,11 +78,16 @@ with t1:
         if well_data is not None:
             well_data.reset_index(inplace=True)
             well_df = pd.DataFrame(well_data)
+            well_df.dropna()
             columns=well_df.columns
             st.write("Well Data:")
             st.write(well_df)
             st.write("Statistics:")
             st.write(well_df.describe())
+            st.write("Data Availability:")
+            fig, ax = plt.subplots()
+            msno.matrix(well_df, ax=ax)
+            st.pyplot(fig)
 
     #         well_data.to_csv('io.csv')
     
@@ -156,7 +160,7 @@ with t2:
             ax.plot(Vsh_Larinor_tertiary, well_df.DEPTH, lw=0.5, color='magenta')
             ax.set_xlabel('Vsh Larinor Tertiary')
             ax.set_ylabel('Depth (m)')
-            ax.set_xlabel('Vsh Larinor Tertiary', color='magenta', fontsize=14)
+            ax.set_xlabel('Vsh Larinor Tertiary', color='magenta', fontsize=9)
             ax.grid(which='both', color='black', axis='both', alpha=1, linestyle='--', linewidth=0.8)
             ax.invert_yaxis()
             cold.pyplot(fig)
@@ -205,6 +209,12 @@ with t3:
                     fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH'], mode='lines'), row=1, col=curve_index)
                     # Set x-axis to log scale
                     fig.update_xaxes(type=log_bool, row=1, col=curve_index)
+                    
+                    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='gray', linecolor='black', linewidth=1, row=1, col=curve_index)
+                    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='gray', linecolor='black', linewidth=1, row=1, col=curve_index)
+                    
+                    # fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='gray', row=1, col=curve_index)  # Add gridlines to the x-axis
+                    # fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='gray', row=1, col=curve_index)  # Add gridlines to the y-axis
                     curve_index += 1
         
                 fig.update_layout(height=1000, showlegend=False, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
@@ -213,6 +223,7 @@ with t3:
                 fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
         
                 st.plotly_chart(fig, use_container_width=True)
+
 
 
         if a == 'Scatter':
@@ -233,6 +244,12 @@ with t3:
                     fig.add_trace(go.Scatter(x=well_data[curve], y=well_data['DEPTH'], mode='markers', marker={'size': 4}), row=1, col=curve_index)
                     # Set x-axis to log scale
                     fig.update_xaxes(type=log_bool, row=1, col=curve_index)
+                    
+                    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='gray', linecolor='black', linewidth=1, row=1, col=curve_index)
+                    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='gray', linecolor='black', linewidth=1, row=1, col=curve_index)
+                    
+                    # fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='gray', row=1, col=curve_index)  # Add gridlines to the x-axis
+                    # fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='gray', row=1, col=curve_index)  # Add gridlines to the y-axis
                     curve_index += 1
         
                 fig.update_layout(height=1000, showlegend=False, yaxis={'title': 'DEPTH', 'autorange': 'reversed'})
@@ -241,6 +258,10 @@ with t3:
                 fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
         
                 st.plotly_chart(fig, use_container_width=True)
+
+
+
+
 
 
 
