@@ -106,7 +106,7 @@ with t1:
     # columns=well_df.columns
 
 
-if well_df is None:
+if well_df == None:
     st.write('error')
 else:
     with t2:
