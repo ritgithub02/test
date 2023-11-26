@@ -2893,7 +2893,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             
         
 
-            st.cache_data
+            
             def create_triple_combo_plot(df_fill, gr_log, res_log, den_log, neu_log):
                 top_depth = df_fill['DEPTH'].min()
                 bot_depth = df_fill['DEPTH'].max()
