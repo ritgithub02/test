@@ -1432,7 +1432,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 x1=mean_value,
                                 y0=section_data['DEPTH'].min(),
                                 y1=section_data['DEPTH'].max(),
-                                line=dict(color='orange', width=1),
+                                line=dict(color='orange', width=1.7),
                                 xref=f'x{i + 2}',
                                 yref='y'
                             )
