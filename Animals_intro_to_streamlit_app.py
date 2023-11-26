@@ -83,6 +83,43 @@ st.set_page_config(layout="wide")
 
 
 
+
+
+
+
+def clone_github_repository(github_repo_url, destination_directory):
+    # Get the repository name from the URL
+    repository_name = github_repo_url.split('/')[-1]
+
+    # Check if the destination directory exists, and create it if not
+    if not os.path.exists(destination_directory):
+        os.makedirs(destination_directory)
+
+    # Download the repository as a zip archive
+    zip_url = f'{github_repo_url}/archive/main.zip'
+    response = requests.get(zip_url)
+    if response.status_code == 200:
+        with zipfile.ZipFile(io.BytesIO(response.content), 'r') as zip_ref:
+            zip_ref.extractall(destination_directory)
+        print(f'Repository cloned to {destination_directory}/{repository_name}')
+    else:
+        print(f'Failed to download the repository. Status code: {response.status_code}')
+
+
+github_repo_url = 'https://github.com/ritgithub02/pd_f'
+destination_directory = "exp"
+clone_github_repository(github_repo_url, destination_directory)
+
+
+
+
+# Declare the custom component
+_component_func = components.declare_component(
+    "plotly1",
+    path="./exp/pd_f-main"
+)
+
+
 def plotly_events(fig: go.Figure):
     spec = fig.to_json()
     component_value = _component_func(spec=spec, default=None)
@@ -91,11 +128,20 @@ def plotly_events(fig: go.Figure):
 
 
 
-# Declare the custom component
-_component_func = components.declare_component(
-    "plotly1",
-    path="./plotly1"
-)
+
+# def plotly_events(fig: go.Figure):
+#     spec = fig.to_json()
+#     component_value = _component_func(spec=spec, default=None)
+#     return component_value
+
+
+
+
+# # Declare the custom component
+# _component_func = components.declare_component(
+#     "plotly1",
+#     path="./plotly1"
+# )
 
 
 
