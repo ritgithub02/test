@@ -169,6 +169,52 @@ pt1,pt2,pt3=st.columns(3)
 display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/output-onlinepngtools.png",pt1)
 
 # st.title('Petroharrit')
+
+css = """
+<style>
+.stTabs {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.stTabs [data-baseweb="tab-list"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+}
+
+.stTabs [data-baseweb="tab-list"] button {
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.stTabs [data-baseweb="tab-list"] button:hover,
+.stTabs [data-baseweb="tab-list"] button:active,
+.stTabs [data-baseweb="tab-list"] button.is-selected {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.stTabs [data-baseweb="tab-pane"] {
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+</style>
+"""
+
+st.markdown(css, unsafe_allow_html=True)
+
+
+
 t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 
 
