@@ -7,3 +7,8 @@ numpy
 matplotlib
 Pillow
 missingno
+welly
+seaborn
+fpdf
+openpyxl
+scikit-learn
