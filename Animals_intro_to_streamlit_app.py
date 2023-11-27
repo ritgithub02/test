@@ -452,7 +452,7 @@ with t1:
 
 
 
-    with st.sidebar.expander('About us', expanded=True):
+    with st.sidebar.expander('About us'):
         st.write("For queries:")
         aun1,aun2=st.columns(2)
         lg1,lg2,lg3,lg4,lg5,lg6=st.columns(6)
