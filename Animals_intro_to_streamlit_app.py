@@ -3610,3 +3610,4 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             Perm_SLR = 10**(slope * (df_fill['PHIE']) + intercept)
                             df_fill['Perm_SRL'] = Perm_SLR #
                             jn.pyplot(plot_permeability_vs_depth(df_fill, permeability_vulcan_cl, top_depth_data_cl, 'CORPERM', 'limegreen', 'b'))
+ 
