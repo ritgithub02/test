@@ -78,12 +78,12 @@ import openpyxl
 
 
 
-
-
-
 st.set_page_config(layout="wide")
 
 
+
+
+# #lc-------
 
 # def plotly_events(fig: go.Figure):
 #     spec = fig.to_json()
@@ -98,6 +98,8 @@ st.set_page_config(layout="wide")
 #     "plotly1",
 #     path="./plotly1"
 # )
+
+# # ------------
 
 
 
@@ -121,6 +123,21 @@ def clone_github_repository(github_repo_url, destination_directory):
         print(f'Failed to download the repository. Status code: {response.status_code}')
 
 
+git_url = 'https://github.com/ritgithub02/pfiles'
+dest_dir = "files"
+clone_github_repository(git_url, dest_dir)
+
+
+
+
+# path="./files/pfiles-main/Gorgonichthys_1_suite3_supercombo_log.las"
+
+
+
+
+
+
+# w------------
 
 github_repo_url = 'https://github.com/ritgithub02/pd_f'
 destination_directory = "exp"
@@ -141,12 +158,7 @@ def plotly_events(fig: go.Figure):
     component_value = _component_func(spec=spec, default=None)
     return component_value
 
-
-
-
-
-
-
+# ----------
 
 
 
@@ -232,7 +244,6 @@ t1, t2, t3 = st.tabs(['Data Loading', 'Formation Evaluation', 'Visualization'])
 ####################################################################################
 #                             Loading the data                                     #
 ####################################################################################
-
 with t1:
 
 
@@ -248,6 +259,7 @@ with t1:
     lsf.subheader('Las File')
     
     file = lsf.file_uploader('Upload the LAS file')
+    dfle=st.checkbox('Use default file')
     if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
     # if file is not None:
         
@@ -414,10 +426,175 @@ with t1:
             st.write(well_df.describe())
 
 
-
+    elif dfle:
+        file_l = "./files/pfiles-main/Gorgonichthys_1_suite3_supercombo_log.las"
+        las_file = lasio.read(file_l)
+        well = welly.Well.from_lasio(las_file)
+        df1=las_file.df()
+        df1.reset_index(inplace=True)
+        well_data=las_file.df()
+        well_data.reset_index(inplace=True)
+        well_df = pd.DataFrame(well_data)
            
+
+        datau = []
+        for curve in las_file.curves:
+            unit = curve.unit
+            xx=curve.mnemonic
+            datau.append([xx,unit])
+        df_unit = pd.DataFrame(datau)
+        def curvename(df_unit,column_names):
+            column_units = []
+            for name in column_names:
+                selected_rows = df_unit[df_unit[0] == name]
+                column_units.append(str(selected_rows[1].iloc[0]))
+                curve_name=[]
+            for i in range(len(column_names)):
+                s=column_names[i]+" ("+column_units[i]+")"
+                curve_name.append(s)
+            return curve_name
+        def unitchanger(df_unit,column_name,new_unit):
+            df_unit.loc[df_unit[0] == column_name,1]=new_unit
+            return df_unit
+        
+        def unitshower(df_unit,column_name):
+            selected_row = df_unit[df_unit[0] == column_name]
+            column_unit=str(selected_row[1].iloc[0])
+            return column_unit
+        
+        def unitadder(df_unit,colunm_name,unit):
+            df_unit.loc[len(df_unit)] = [colunm_name,unit]
+            return df_unit
+        
+        # unitadder(df_unit,'TPHI','V/V')
+
+
+
+        st.sidebar.subheader('Depth Selction')
+    
+        default_column1 = 'DEPTH' if 'DEPTH' in well_df.columns else ('DEPT' if 'DEPT' in well_df.columns else well_df.columns[1])
+        
+        # selected_column_NPHI = st.selectbox('NPHI', well_df.columns, index=well_df.columns.get_loc(default_column))
+        
+        deps = st.sidebar.selectbox("DEPTH log",well_df.columns, index=well_df.columns.get_loc(default_column1))
+
+        well_df.rename(columns={deps: 'DEPTH'}, inplace=True)
+
+       
+        min_depth = st.sidebar.text_input('Enter Minimum Depth', well_df['DEPTH'].min())
+        max_depth = st.sidebar.text_input('Enter Maximum Depth', well_df['DEPTH'].max())
+        
+        min_depth = float(min_depth)
+        max_depth = float(max_depth)
+        
+        well_df = well_df[(well_df['DEPTH'] >= min_depth) & (well_df['DEPTH'] <= max_depth)]
+        # st.write(filtered_df)
+        st.title("")
+        st.subheader("LAS File Header Information")
+        with st.expander("Curves Information"):
+            header_info = las_file.header
+            # st.title("")
+            
+            for key, value in header_info.items():
+                st.write(f"{key}: {value}")
+            
+            if 'well' in header_info:
+                st.subheader("Well Information")
+                well_info = header_info['well']
+                for key, value in well_info.items():
+                    st.write(f"{key}: {value}")
+            
+            if 'curves' in header_info:
+                st.subheader("Curves Information")
+                curves_info = header_info['curves']
+                for curve in curves_info:
+                    st.write(f"Curve Name: {curve['mnemonic']}")
+                    st.write(f"Unit: {curve['unit']}")
+                    st.write(f"Description: {curve['descr']}")
+                    st.write(f"API Code: {curve['API_code']}")
+                    st.title("")
+                    st.title("")
+        st.title("")        
+        st.subheader("Well Log Unit Conversion")
+        with st.expander('Unit Conversion'):
+            if st.checkbox('Guide'):
+                image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Screenshot%202023-11-16%20033504.png"
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    image = Image.open(BytesIO(response.content))
+                    st.image(image, caption='')
+                else:
+                    st.write(f"Failed to fetch the image. Status code: {response.status_code}")
+            def convert_units(log_name, factor, unit):
+                if unit == "Multiply":
+                    return well_df[log_name] * factor
+                elif unit == "Divide":
+                    return well_df[log_name] / factor
+                return well_df[log_name]  # If no conversion is selected
+            
+
+
+
+
+            selected_logs = st.multiselect("Select logs for conversion", well_df.columns)
+            
+            if selected_logs:
+                conversion_factors = {}
+            
+                for log in selected_logs:
+                    aal,laa,al,la= st.columns([0.5,1,1,1])
+                    aal.subheader(unitshower(df_unit,log) + '       to')
+                    new_unit=laa.text_input(' Enter the new unit: ',key=f"{log}_factor1")
+                    factor = al.number_input(f"Enter conversion factor for {log}", value=1.0, key=f"{log}_factor")
+                    unit = la.selectbox("Select conversion method", ["Multiply", "Divide", "None"], key=f"{log}_unit")
+                    conversion_factors[log] = (factor, unit)
+                    if st.checkbox('Convert '+ log):
+                        # st."Converted Well Data")
+                        well_df[log] = convert_units(log, factor, unit)
+                        unitchanger(df_unit,log,new_unit)
+                        # st.write(well_df)
+                    else:
+                        st.write('Unit Convesion has to be done')
+
+
+
+
+
+    
+
+
+        
+        columns = well_df.columns
+        st.title("")
+        with lsf.expander("View Data"):
+            st.write(well_df)
+        st.subheader("Well Data:")
+        with st.expander("View"):
+            st.write(well_df)
+            # st.title("")
+        st.title("")
+        st.subheader("Statistics:")
+        with st.expander("View"):
+            st.write(well_df.describe())
+
+
+
+
     else:
         lsf.error('LAS File Upload is Required')
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
     st.sidebar.header('')
@@ -452,7 +629,7 @@ with t1:
 
 
 
-    with st.sidebar.expander('About us'):
+    with st.sidebar.expander('About us', expanded=True):
         st.write("For queries:")
         aun1,aun2=st.columns(2)
         lg1,lg2,lg3,lg4,lg5,lg6=st.columns(6)
@@ -509,7 +686,7 @@ with t1:
     fmf.subheader('Formation Tops')
     with fmf.expander("Upload"):
         uploaded_file1 = st.file_uploader("Upload a CSV or XLSX file ", type=["csv", "xlsx"])
-    
+        dftfc = st.checkbox('Use default file ')
         if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')):
             if uploaded_file1.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 f_df = pd.read_excel(uploaded_file1, engine="openpyxl")
@@ -519,13 +696,22 @@ with t1:
     
             st.write("Dataset:")
             st.write(f_df)
+        elif dftfc:
+            file_f = "./files/pfiles-main/Grid Export.xlsx"
+            f_df = pd.read_excel(file_f, engine="openpyxl")
+            st.success('File Uploaded Successfully')
+    
+            st.write("Dataset:")
+            st.write(f_df)
+        else:
+            st.error('csv/xlsx File Upload is Required')
 
 
 
     cmf.subheader('Core Data')    
     with cmf.expander("Upload"):    
         uploaded_file2 = st.file_uploader("Upload a CSV or XLSX file", type=["csv", "xlsx"])
-    
+        dftcc= st.checkbox('Use default file  ')
         if uploaded_file2 is not None and (uploaded_file2.name.lower().endswith('.xlsx') or uploaded_file2.name.lower().endswith('.csv')):
             if uploaded_file2.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 c_df = pd.read_excel(uploaded_file2, engine="openpyxl")
@@ -536,7 +722,15 @@ with t1:
             st.write("Core Data:")
             st.write(c_df)
 
-
+        elif dftcc:
+            file_f = "./files/pfiles-main/Core_data.xlsx"
+            c_df = pd.read_excel(file_f, engine="openpyxl")
+            st.success('File Uploaded Successfully')
+    
+            st.write("Dataset:")
+            st.write(c_df)
+        else:
+            st.error('csv/xlsx File Upload is Required')
 
 
 
@@ -550,7 +744,8 @@ with t1:
 #                             Quality check                                        #
 ####################################################################################
 
-if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
+# if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
+if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')) or dfle:
     with t2:
         st.subheader('Data Preparation')
         ex=st.expander("Quality Control")
@@ -2534,7 +2729,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
         
         st.subheader('Formation Tops Plot')
         with st.expander("View"):
-            if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')):
+            if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')) or dftfc:
                 ftd,fbd,ffn=st.columns(3)
                 selected_column_top_depth = ftd.selectbox('Select top depth',f_df.columns)
                 selected_column_base_depth = fbd.selectbox('Select base depth',f_df.columns)
@@ -2942,7 +3137,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             
         
 
-            
+            st.cache_data
             def create_triple_combo_plot(df_fill, gr_log, res_log, den_log, neu_log):
                 top_depth = df_fill['DEPTH'].min()
                 bot_depth = df_fill['DEPTH'].max()
@@ -3230,7 +3425,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
         st.subheader('Core Data Plot')
         with st.expander("View"):
-            if uploaded_file2 is not None and (uploaded_file2.name.lower().endswith('.xlsx') or uploaded_file2.name.lower().endswith('.csv')):
+            if uploaded_file2 is not None and (uploaded_file2.name.lower().endswith('.xlsx') or uploaded_file2.name.lower().endswith('.csv')) or dftcc:
                 st.title('')
                 rty, yty, tyr= st.columns(3)  # Changed from 2 to 3 columns
                 x = rty.selectbox('Select Depth', c_df.columns)
