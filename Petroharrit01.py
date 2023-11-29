@@ -178,10 +178,9 @@ def display_image_from_url(image_url,pos):
 
 
 
-display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/20752542s.jpg",st)
 display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/dhippng.png",st)
 
-
+display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/Indian_Institute_of_Technology_(Indian_School_of_Mines)%2C_Dhanbad_Logo.png",st.sidebar)
 # ---------------------------------------------------------------------------------LOADING-------
 
 
@@ -323,7 +322,7 @@ with t1:
         default_column1 = 'DEPTH' if 'DEPTH' in well_df.columns else ('DEPT' if 'DEPT' in well_df.columns else well_df.columns[1])
         
         # selected_column_NPHI = st.selectbox('NPHI', well_df.columns, index=well_df.columns.get_loc(default_column))
-        
+
         deps = st.sidebar.selectbox("DEPTH log",well_df.columns, index=well_df.columns.get_loc(default_column1))
 
         well_df.rename(columns={deps: 'DEPTH'}, inplace=True)
