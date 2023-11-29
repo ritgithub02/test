@@ -179,7 +179,8 @@ def display_image_from_url(image_url,pos):
 
 
 display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/dhippng.png",st)
-# display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/Indian_Institute_of_Technology_(Indian_School_of_Mines)%2C_Dhanbad_Logo.png",st.sidebar)
+
+
 # ---------------------------------------------------------------------------------LOADING-------
 
 
