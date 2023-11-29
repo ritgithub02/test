@@ -178,7 +178,8 @@ def display_image_from_url(image_url,pos):
 
 
 
-display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/20752542s.jpg",st)
+# display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/20752542s.jpg",st)
+display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/dhippng.png",st)
 
 
 
@@ -629,7 +630,7 @@ with t1:
 
 
 
-    with st.sidebar.expander('About us', expanded=True):
+    with st.sidebar.expander('About us'):
         st.write("For queries:")
         aun1,aun2=st.columns(2)
         lg1,lg2,lg3,lg4,lg5,lg6=st.columns(6)
