@@ -178,7 +178,8 @@ def display_image_from_url(image_url,pos):
 
 
 
-display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/dhippng.png",st)
+display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/20752542s.jpg",st)
+
 
 
 # ---------------------------------------------------------------------------------LOADING-------
@@ -322,7 +323,7 @@ with t1:
         default_column1 = 'DEPTH' if 'DEPTH' in well_df.columns else ('DEPT' if 'DEPT' in well_df.columns else well_df.columns[1])
         
         # selected_column_NPHI = st.selectbox('NPHI', well_df.columns, index=well_df.columns.get_loc(default_column))
-
+        
         deps = st.sidebar.selectbox("DEPTH log",well_df.columns, index=well_df.columns.get_loc(default_column1))
 
         well_df.rename(columns={deps: 'DEPTH'}, inplace=True)
@@ -628,7 +629,7 @@ with t1:
 
 
 
-    with st.sidebar.expander('About us'):
+    with st.sidebar.expander('About us', expanded=True):
         st.write("For queries:")
         aun1,aun2=st.columns(2)
         lg1,lg2,lg3,lg4,lg5,lg6=st.columns(6)
@@ -3136,7 +3137,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             
         
 
-            
             def create_triple_combo_plot(df_fill, gr_log, res_log, den_log, neu_log):
                 top_depth = df_fill['DEPTH'].min()
                 bot_depth = df_fill['DEPTH'].max()
@@ -3609,4 +3609,3 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             Perm_SLR = 10**(slope * (df_fill['PHIE']) + intercept)
                             df_fill['Perm_SRL'] = Perm_SLR #
                             jn.pyplot(plot_permeability_vs_depth(df_fill, permeability_vulcan_cl, top_depth_data_cl, 'CORPERM', 'limegreen', 'b'))
- 
