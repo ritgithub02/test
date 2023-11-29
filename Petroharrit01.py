@@ -259,7 +259,7 @@ with t1:
     lsf.subheader('Las File')
     
     file = lsf.file_uploader('Upload the LAS file')
-    dfle=st.checkbox('Use default file')
+    dfle=st.checkbox('Use demo file')
     if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
     # if file is not None:
         
@@ -629,7 +629,7 @@ with t1:
 
 
 
-    with st.sidebar.expander('About us', expanded=True):
+    with st.sidebar.expander('About us'):
         st.write("For queries:")
         aun1,aun2=st.columns(2)
         lg1,lg2,lg3,lg4,lg5,lg6=st.columns(6)
@@ -686,7 +686,7 @@ with t1:
     fmf.subheader('Formation Tops')
     with fmf.expander("Upload"):
         uploaded_file1 = st.file_uploader("Upload a CSV or XLSX file ", type=["csv", "xlsx"])
-        dftfc = st.checkbox('Use default file ')
+        dftfc = st.checkbox('Use demo file ')
         if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')):
             if uploaded_file1.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 f_df = pd.read_excel(uploaded_file1, engine="openpyxl")
@@ -711,7 +711,7 @@ with t1:
     cmf.subheader('Core Data')    
     with cmf.expander("Upload"):    
         uploaded_file2 = st.file_uploader("Upload a CSV or XLSX file", type=["csv", "xlsx"])
-        dftcc= st.checkbox('Use default file  ')
+        dftcc= st.checkbox('Use demo file  ')
         if uploaded_file2 is not None and (uploaded_file2.name.lower().endswith('.xlsx') or uploaded_file2.name.lower().endswith('.csv')):
             if uploaded_file2.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 c_df = pd.read_excel(uploaded_file2, engine="openpyxl")
