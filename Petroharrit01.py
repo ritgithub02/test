@@ -179,7 +179,7 @@ def display_image_from_url(image_url,pos):
 
 
 display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/20752542s.jpg",st)
-
+display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/dhippng.png",st)
 
 
 # ---------------------------------------------------------------------------------LOADING-------
