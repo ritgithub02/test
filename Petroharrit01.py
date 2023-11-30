@@ -625,8 +625,9 @@ with t1:
 
     with st.sidebar.expander('Our motive'):
         st.markdown("Welcome to PetroHarrit \n\nThank you for exploring our interface created by IITISM students for a petrophysical analysis and visualization assignment. PetroHarrit offers an interactive platform for comprehensive analysis, providing a range of features for your petrophysical needs. \n\nStay tuned for our upcoming user manual to guide you through the functionalities. We're continually working on adding more features to enhance your experience. We hope you find PetroHarrit valuable for your work. Your feedback is important to us as we strive to improve and bring you the latest updates. \n\nEnjoy your analysis journey with PetroHarrit!")
-    
-
+        st.markdown('Thanks:')
+        st.markdown("[WAPIMS](https://wapims.dmp.wa.gov.au/WAPIMS/)", unsafe_allow_html=True)
+        st.markdown('For demo data, including LAS files, formation top data, and core data')
 
 
 
@@ -667,11 +668,24 @@ with t1:
         st.markdown("")
         st.markdown("Under guidence of:")
 
-        # st.markdown("[Dr. Partha Pratim Mandal](https://www.linkedin.com/in/harsh-prajapati-682b63287/)", unsafe_allow_html=True)
+        st.markdown("[Dr. Partha Pratim Mandal](https://iitism.irins.org/profile/328364)", unsafe_allow_html=True)
+        st.markdown("[Founder of SRCG](https://www.linkedin.com/company/subsurface-resource-charecterization-lab-iit-ism-dhanbad/)", unsafe_allow_html=True)
+
+
+
+        st.write("Assistant Professor  \nDepartment of Applied Geophysics  \nIIT(ISM) Dhanbad")
+
         # lg01,lg02,lg03,lg04,lg05,lg06=st.columns(6)
+        qlg1,qlg2,qlg3,qlg4,qlg5,qlg6=st.columns(6)
+        # st.write("Dr. Partha Pratim Mandal  \nAssistant Professor  \nDepartment of Applied Geophysics  \nIIT(ISM) Dhanbad")
 
-        st.write("Dr. Partha Pratim Mandal  \nAssistant Professor  \nDepartment of Applied Geophysics  \nIIT(ISM) Dhanbad")
+        profile9 = "https://www.linkedin.com/in/ppmcurtin/"
+        markdown_text = create_linkedIn_profile_link(profile9, lin)
+        qlg1.markdown(markdown_text, unsafe_allow_html=True)
 
+        profile10 = "partham@iitism.ac.in"
+        markdown_text = create_gmail_profile_link(profile10,gml)
+        qlg2.markdown(markdown_text, unsafe_allow_html=True)
 
         # profile1 = "https://www.linkedin.com/in/harsh-prajapati-682b63287/"
         # markdown_text = create_linkedIn_profile_link(profile1, lin)
