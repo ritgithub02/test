@@ -366,14 +366,6 @@ with t1:
         st.title("")        
         st.subheader("Well Log Unit Conversion")
         with st.expander('Unit Conversion'):
-            if st.checkbox('Guide'):
-                image_url = "https://raw.githubusercontent.com/ritgithub02/data/main/Screenshot%202023-11-16%20033504.png"
-                response = requests.get(image_url)
-                if response.status_code == 200:
-                    image = Image.open(BytesIO(response.content))
-                    st.image(image, caption='')
-                else:
-                    st.write(f"Failed to fetch the image. Status code: {response.status_code}")
             def convert_units(log_name, factor, unit):
                 if unit == "Multiply":
                     return well_df[log_name] * factor
