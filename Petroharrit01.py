@@ -643,7 +643,9 @@ with t1:
         qlg2.markdown("[🔗](https://www.linkedin.com/in/ppmcurtin/)", unsafe_allow_html=True)
         qlg1.markdown("[📧](mailto:partham@iitism.ac.in)", unsafe_allow_html=True)
 
+    with st.sidebar.expander('Download exe version'):
 
+        st.markdown("[Download](https://drive.google.com/drive/folders/1x84JjnHposE5fy1Cav8wB0OpofzSF4oO?usp=sharing)", unsafe_allow_html=True)
 
 
         ## for now
