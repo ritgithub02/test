@@ -643,10 +643,23 @@ with t1:
         qlg2.markdown("[🔗](https://www.linkedin.com/in/ppmcurtin/)", unsafe_allow_html=True)
         qlg1.markdown("[📧](mailto:partham@iitism.ac.in)", unsafe_allow_html=True)
 
+
+
+
+    with st.sidebar.expander("Merge and Edit LAS Files"):
+        st.markdown("""
+        *Note:* This app currently supports processing a single LAS file as input. If you need to work with multiple LAS files,
+        you can use the following link to merge and edit them:
+
+        [LAS File Merge and Edit App](https://lasmastereditor.streamlit.app/)
+
+        Additionally, if your calculations require a subset of logs, consider reducing the number of logs to speed up the process.
+        """)
+
+
     # with st.sidebar.expander('Download exe version'):
 
-    #     st.markdown("[Download](https://drive.google.com/drive/folders/1x84JjnHposE5fy1Cav8wB0OpofzSF4oO?usp=sharing)", unsafe_allow_html=True)
-
+    #     st.markdown('[Download](https://drive.google.com/drive/folders/1x84JjnHposE5fy1Cav8wB0OpofzSF4oO?usp=sharing)')
 
         ## for now
         # profile9 = "https://www.linkedin.com/in/ppmcurtin/"
@@ -2083,7 +2096,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             # Assign cluster labels to the logs
                             logs['Cluster'] = kmeans.labels_
 
-                            cmap_facies = plt.cm.get_cmap('hsv', n_cc)
+                            cmap_facies = plt.cm.get_cmap('tab20', n_cc)
 
                             ztop = df_fill.DEPTH.min()
                             zbot = df_fill.DEPTH.max()
@@ -2117,6 +2130,10 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 if i != 0:
                                     ax[i].set_yticklabels([])
 
+                            if df_fill['DEPTH'].iloc[0] > df_fill['DEPTH'].iloc[-1]:
+                                ax[len(col_lith)].invert_yaxis()
+                            else:
+                                pass
                             ax[len(col_lith)].set_xlabel('Facies', fontsize=16)
                             ax[len(col_lith)].set_yticklabels([])
                             ax[len(col_lith)].set_xticklabels([])
@@ -2139,19 +2156,17 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             # st.title(''   )
                             # st.title('')
                             st.subheader("Unsupervised Clustering Guide")
-                            # with st.spinner('Wait for it...'):
-                            #     time.sleep(time.time() - start_time)
+                            with st.spinner('Wait for it...'):
+                                time.sleep(time.time() - start_time)
                             if column_name and column_name[0] is not None:
-                                n_cc = st.number_input('Enter the number for the clusters:', value=6)
-
+                                n_cc = st.number_input('Enter the number for the clusters:', value=10)
+                
                                 f = make_facies_log_plot(df_fill, column_name,n_cc)
                     else:
                         st.warning('Please selection of the columns.')
 
                     st.write("")
                     st.write("")
-
-
 
 
 
