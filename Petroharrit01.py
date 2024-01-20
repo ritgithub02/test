@@ -1091,6 +1091,9 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     column_choice_BS = a2.selectbox('Choose the Bit Size column', well_df.columns, index=well_df.columns.get_loc(default_column_BS) if default_column_BS in well_df.columns else 1)
                     selected_column_BS=column_choice_BS
 
+                    matched_mnemonics_CALI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Caliper'].values]
+
+                    default_column_CALI = matched_mnemonics_CALI[0] if matched_mnemonics_CALI else 'CALI'
 
                     # Working as the dropdown menu for selecting the Caliper curve
 
