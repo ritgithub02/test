@@ -1103,7 +1103,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     # a3.write("")    
                     # a3.write(f"Selected column: {selected_column_CALI}.")
 
-                    tol_val = a3.number_input("Enter the tolerance value for borehole diameter deviation:")
+                    tol_val = a3.number_input("Enter the tolerance value for borehole diameter deviation:",value=float("2.0"))
                     condition_bad = abs(well_df[selected_column_BS] - well_df[selected_column_CALI]) > tol_val
                     condition_good = abs(well_df[selected_column_BS] - well_df[selected_column_CALI]) <= tol_val
 
