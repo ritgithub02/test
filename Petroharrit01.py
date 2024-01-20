@@ -313,7 +313,7 @@ with t1:
         
         tfile = tempfile.NamedTemporaryFile(delete=False)
         tfile.write(file.read())
-        las_file = lasio.read(tfile.name)
+        las_file = lasio.read(tfile.name,engine='normal')
 
 
         if las_file is not None:
