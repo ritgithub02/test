@@ -350,6 +350,8 @@ with t1:
         deps = st.sidebar.selectbox("DEPTH log",well_df.columns, index=well_df.columns.get_loc(default_column1))
 
         well_df.rename(columns={deps: 'DEPTH'}, inplace=True)
+        unitadder(df_unit,'DEPTH',las_file.curves[0].unit)
+
 
        
         min_depth = st.sidebar.text_input('Enter Minimum Depth', well_df['DEPTH'].min())
