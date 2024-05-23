@@ -727,6 +727,59 @@ with t1:
 
 
 
+
+####################################################################################
+#                             Checking for the default mneomenic                   #
+####################################################################################
+
+#1 Bit Size
+matched_mnemonics_BS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['BitSize'].values]
+
+default_column_BS = matched_mnemonics_BS[0] if matched_mnemonics_BS else 'BS'
+
+#2 Caliper
+
+matched_mnemonics_CALI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Caliper'].values]
+
+default_column_CALI = matched_mnemonics_CALI[0] if matched_mnemonics_CALI else 'CALI'
+
+#3 Gamma ray
+
+matched_mnemonics_GR = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['GR'].values]
+
+default_column_GR = matched_mnemonics_GR[0] if matched_mnemonics_GR else 'GR'
+
+#4 Neutron Porosity
+
+matched_mnemonics_NPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['NPHI'].values]
+
+default_column_NPHI = matched_mnemonics_NPHI[0] if matched_mnemonics_NPHI else 'NPHI'
+
+#5 Density Porosity
+
+matched_mnemonics_DPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['PHIT'].values]
+
+default_column_DPHI = matched_mnemonics_DPHI[0] if matched_mnemonics_DPHI else 'DPHI'
+
+#6 Density 
+
+matched_mnemonics_RHOB = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['RHOB'].values]
+
+default_column_RHOB = matched_mnemonics_RHOB[0] if matched_mnemonics_RHOB else 'RHOB'
+
+#7 Deep Resistivity 
+
+matched_mnemonics_RESD = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rt'].values]
+
+default_column_RESD = matched_mnemonics_RESD[0] if matched_mnemonics_RESD else 'AT90'
+
+#8 Shallow Resistivity
+
+matched_mnemonics_RESS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rxo'].values]
+
+default_column_RESS = matched_mnemonics_RESS[0] if matched_mnemonics_RESS else 'AT10'
+
+
     # ##########################################################################
     # #                          Visualization                                 #
     # ##########################################################################            
@@ -824,14 +877,18 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     colc, cold  = st.columns(2)
                     st.write('')
                     xplot_x = colc.selectbox('X-Axis', well_df.columns,index=1)
-                    xplot_x_log = cold.radio('X Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))
+                    xplot_x_log = cold.radio('X Axis', ('Linear', 'Logarithmic'))
+                    invert_x_axis = cold.checkbox("Invert X Axis")
+
                     if xplot_x_log == 'Linear':
                         xplot_x_bool = False
                     elif xplot_x_log == 'Logarithmic':
                         xplot_x_bool = True
                     st.write('')
                     xplot_y = colc.selectbox('Y-Axis', well_df.columns,index=2)  # Change 'col1' to 'col2'
-                    xplot_y_log = cold.radio('Y Axis - Linear or Logarithmic', ('Linear', 'Logarithmic'))  # Change 'col1' to 'col2'
+                    xplot_y_log = cold.radio('Y Axis', ('Linear', 'Logarithmic'))  # Change 'col1' to 'col2'
+                    invert_y_axis = cold.checkbox("Invert Y Axis")
+
                     if xplot_y_log == 'Linear':
                         xplot_y_bool = False
                     elif xplot_y_log == 'Logarithmic':
@@ -839,6 +896,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     custom_color_scale = ["red","orange", "blue",  "purple"]
 
                     xplot_col = cold.selectbox('Colour-Bar', well_df.columns, index=0)
+
                     if st.checkbox("Completed the Selection for the cross plot"):
                         xplot = px.scatter(
                             well_df,
@@ -850,11 +908,150 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             color_continuous_scale=custom_color_scale
                         )
                         xplot.update_layout(template='plotly_dark')
-                        xplot.update_xaxes(title_text=curvename(df_unit,[xplot_x])[0])
-                        xplot.update_yaxes(title_text=curvename(df_unit,[xplot_y])[0])
-                        xplot.update_coloraxes(colorbar_title=curvename(df_unit,[xplot_col])[0])
+                        
+                        if invert_x_axis:
+                            xplot.update_xaxes(title_text=curvename(df_unit, [xplot_x])[0], autorange='reversed')  # Invert x-axis
+                        else:
+                            xplot.update_xaxes(title_text=curvename(df_unit, [xplot_x])[0])  # Normal x-axis
+                        
+                        if invert_y_axis:
+                            xplot.update_yaxes(title_text=curvename(df_unit, [xplot_y])[0], autorange='reversed')  # Invert y-axis
+                        else:
+                            xplot.update_yaxes(title_text=curvename(df_unit, [xplot_y])[0])  # Normal y-axis
+                        
+                        xplot.update_coloraxes(colorbar_title=curvename(df_unit, [xplot_col])[0])
                         st.plotly_chart(xplot, use_container_width=True)
+
             plot(well_df)
+
+
+
+
+
+
+            st.subheader('Triple Combo Plot')
+            with st.expander("View"):
+                    # st.subheader('Triple Combo Plot')
+                if st.checkbox('Show plot'):
+                    df_fill = well_df.copy()
+                    cty1,cty2,cty3,cty4,cty5,cty6,cty7,cty8= st.columns(8)
+                    selected_column_GR=cty1.selectbox('Gamma Ray', well_df.columns, index=well_df.columns.get_loc(default_column_GR) if default_column_GR in well_df.columns else 1)
+
+                    selected_column_RESD=cty2.selectbox('Resistivity:',well_df.columns, index=well_df.columns.get_loc(default_column_RESD) if default_column_RESD in well_df.columns else 1)
+
+                    selected_column_RHOB=cty3.selectbox('RHOB', well_df.columns, index=well_df.columns.get_loc(default_column_RHOB) if default_column_RHOB in well_df.columns else 1)
+
+                    selected_column_NPHI=cty4.selectbox('NPHI', well_df.columns, index=well_df.columns.get_loc(default_column_NPHI) if default_column_NPHI in well_df.columns else 1)
+
+            
+                    @st.cache_data(experimental_allow_widgets=True)
+                    def create_triple_combo_plot(selected_column_NPHI,selected_column_RESD,selected_column_GR,selected_column_RHOB):
+                        top_depth = df_fill['DEPTH'].min()
+                        bot_depth = df_fill['DEPTH'].max()
+                        plot_h, plot_w, title_size, title_height, line_width = 16 ,12, 12, 1.0, 1
+                        # Define track parameters
+                        gr_params = {'color': 'teal', 'trackname': curvename(df_unit,[selected_column_GR])[0], 'left': 0, 'right': 200, 'cutoff': 60, 'base': 0,
+                                     'sand_color': 'gold', 'shale_color': 'lightslategray', 'div': 5}
+                        res_params = {'color': 'darkorange', 'trackname': curvename(df_unit,[selected_column_RESD])[0], 'left': 0.2, 'right': 20000, 'cutoff': 100, 'shading_color': 'navajowhite'}
+                        den_params = {'color': 'brown', 'trackname': curvename(df_unit,[selected_column_RHOB])[0], 'left': 1.95, 'right': 2.95}
+                        neu_params = {'color': 'darkslategray', 'trackname': curvename(df_unit,[selected_column_NPHI])[0], 'mean': np.nanmean(df_fill[selected_column_NPHI]),
+                                      'left1': 0.45, 'right1': -0.15, 'left2': 45, 'right2': -15}
+                        den_neu_params = {'div': 5, 'xover_color': 'gold', 'sep_color': 'lightslategray'}
+                        # Plot setup
+                        fig, axes = plt.subplots(1, 3, figsize=(plot_w, plot_h))
+                        axes = axes.flatten()
+                        for ax in axes:
+                            ax.minorticks_on()
+                            ax.grid(which='major', color='silver', linestyle='-')
+                            ax.grid(which='minor', color='lightgrey', linestyle=':', axis='y')
+                            ax.xaxis.set_ticks_position("top")
+                            ax.xaxis.set_label_position("top")
+                        ax1 = axes[0]
+                        ax1.plot(selected_column_GR, "DEPTH", data=df_fill, color=gr_params['color'], lw=line_width)
+                        ax1.set_xlabel(gr_params['trackname'])
+                        ax1.set_xlim(gr_params['left'], gr_params['right'])
+                        ax1.set_ylim(bot_depth, top_depth)
+                        ax1.fill_betweenx(df_fill['DEPTH'], gr_params['base'], df_fill[selected_column_GR], where=(gr_params['cutoff'] >= df_fill[selected_column_GR]),
+                                          interpolate=True, color=gr_params['sand_color'], linewidth=0, alpha=0.8)
+                        ax1.fill_betweenx(df_fill['DEPTH'], gr_params['base'], df_fill[selected_column_GR], where=(gr_params['cutoff'] <= df_fill[selected_column_GR]),
+                                          interpolate=True, color=gr_params['shale_color'], linewidth=0, alpha=0.8)
+                        ax2 = axes[1]
+                        ax2.plot(selected_column_RHOB, "DEPTH", data=df_fill, color=den_params['color'], lw=line_width)
+                        ax2.set_xlabel(den_params['trackname'], color='brown')
+                        ax2.set_xlim(den_params['left'], den_params['right'])
+                        ax2.set_ylim(bot_depth, top_depth)
+                        ax4 = ax2.twiny()
+                        ax4.plot(selected_column_NPHI, "DEPTH", data=df_fill, color=neu_params['color'], lw=line_width)
+                        ax4.set_xlabel(neu_params['trackname'], color='darkslategray')
+                        ax4.spines['top'].set_position(("axes", 1.04))
+                        ax4.set_xlim(neu_params['left1'] if neu_params['mean'] < 1 else neu_params['left2'],
+                                     neu_params['right1'] if neu_params['mean'] < 1 else neu_params['right2'])
+                        ax2.xaxis.tick_top()
+                        ax4.xaxis.tick_top()
+                        ax2.tick_params(axis='x', colors='brown')
+                        ax2.spines['top'].set_edgecolor('brown')
+    
+                        ax4.tick_params(axis='x', colors='darkslategray')
+                        ax4.spines['top'].set_edgecolor('darkslategray')
+                        ax2.xaxis.labelpad = 14
+                        ax4.xaxis.labelpad = 10
+                        ax2.xaxis.set_label_coords(0.5, 1.02)
+                        ax4.xaxis.set_label_coords(0.5, 1.06)
+                        ax2.xaxis.set_tick_params(pad=5)
+                        ax4.xaxis.set_tick_params(pad=5)
+                        x1, x2 = df_fill[selected_column_RHOB],df_fill[selected_column_NPHI]
+                        x, z = np.array(ax2.get_xlim()), np.array(ax4.get_xlim())
+                        nz = ((x2 - np.max(z)) / (np.min(z) - np.max(z))) * (np.max(x) - np.min(x)) + np.min(x)
+                        ax2.fill_betweenx(df_fill['DEPTH'], x1, nz, where=x1 >= nz, interpolate=True, color=den_neu_params['sep_color'],
+                                          linewidth=0, alpha=0.8)
+                        ax2.fill_betweenx(df_fill['DEPTH'], x1, nz, where=x1 <= nz, interpolate=True, color=den_neu_params['xover_color'],
+                                          linewidth=0, alpha=0.8)
+    
+                        ax3 = axes[2]
+                        ax3.plot(selected_column_RESD, "DEPTH", data=df_fill, color=res_params['color'], lw=line_width)
+                        ax3.set_xlabel(res_params['trackname'])
+                        ax3.set_xlim(res_params['left'], res_params['right'])
+                        ax3.set_ylim(bot_depth, top_depth)
+                        ax3.semilogx()
+                        ax3.fill_betweenx(df_fill['DEPTH'], res_params['cutoff'],df_fill[selected_column_RESD], where=(df_fill[selected_column_RESD] >= res_params['cutoff']),
+                                          interpolate=True, color=res_params['shading_color'], linewidth=0)
+                        plt.tight_layout()
+                        return fig
+                    if selected_column_NPHI is not None and selected_column_RESD is not None and selected_column_GR is not None and selected_column_RHOB is not None:
+                        fig=create_triple_combo_plot(selected_column_NPHI,selected_column_RESD,selected_column_GR,selected_column_RHOB)
+                        st.pyplot(fig)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             st.subheader('Formation Tops Plot')
             with st.expander("View"):
                 if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')) or dftfc:
@@ -945,59 +1142,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
 
 
-
-
-
-    ####################################################################################
-    #                             Checking for the default mneomenic                   #
-    ####################################################################################
-
-    #1 Bit Size
-    matched_mnemonics_BS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['BitSize'].values]
-
-    default_column_BS = matched_mnemonics_BS[0] if matched_mnemonics_BS else 'BS'
-
-    #2 Caliper
-
-    matched_mnemonics_CALI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Caliper'].values]
-
-    default_column_CALI = matched_mnemonics_CALI[0] if matched_mnemonics_CALI else 'CALI'
-
-    #3 Gamma ray
-
-    matched_mnemonics_GR = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['GR'].values]
-
-    default_column_GR = matched_mnemonics_GR[0] if matched_mnemonics_GR else 'GR'
-
-    #4 Neutron Porosity
-
-    matched_mnemonics_NPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['NPHI'].values]
-
-    default_column_NPHI = matched_mnemonics_NPHI[0] if matched_mnemonics_NPHI else 'NPHI'
-
-    #5 Density Porosity
-
-    matched_mnemonics_DPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['PHIT'].values]
-
-    default_column_DPHI = matched_mnemonics_DPHI[0] if matched_mnemonics_DPHI else 'DPHI'
-
-    #6 Density 
-
-    matched_mnemonics_RHOB = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['RHOB'].values]
-
-    default_column_RHOB = matched_mnemonics_RHOB[0] if matched_mnemonics_RHOB else 'RHOB'
-
-    #7 Deep Resistivity 
-
-    matched_mnemonics_RESD = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rt'].values]
-
-    default_column_RESD = matched_mnemonics_RESD[0] if matched_mnemonics_RESD else 'AT90'
-
-    #8 Shallow Resistivity
-
-    matched_mnemonics_RESS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rxo'].values]
-
-    default_column_RESS = matched_mnemonics_RESS[0] if matched_mnemonics_RESS else 'AT10'
 
     # ----------------------------------------------------------------------------------TAB 2--
 
