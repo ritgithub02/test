@@ -2092,16 +2092,19 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         def make_facies_log_plot(df_fill, col_lith, n_cc):
                             # Helper function to get a colormap
                             def get_cmap(n, name='hsv'):
-                                return plt.cm.get_cmap(name, n)
+                                try:
+                                    return plt.cm.get_cmap(name, n)
+                                except ValueError as e:
+                                    st.error(f"Error in colormap creation: {e}")
+                                    return plt.cm.get_cmap(name, 10)  # Default to 10 colors
 
-                            # Get facies colors
                             facies_colors = get_cmap(n_cc, name='hsv')
 
                             logs = df_fill[col_lith].copy()
 
                             # Interpolating missing values
                             logs.interpolate(method='linear', limit_direction='both', axis=0, inplace=True)
-                            
+
                             # Standardize the data
                             scaled_data = StandardScaler().fit_transform(logs)
 
