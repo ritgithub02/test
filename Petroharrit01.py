@@ -877,7 +877,16 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         maximum_value = max(combined_depth)
                         depth_for_formation_plot = np.arange(0, maximum_value, 0.15)
                         def get_cmap(n, name='hsv'):
-                            return plt.cm.get_cmap(name, n)
+                            try:
+                                # Using the new method to get the colormap
+                                cmap = plt.colormaps[name].resampled(n)
+                                return cmap
+                            except KeyError as e:
+                                st.subheader(f"Colormap {name} not found. Error: {e}")
+                                return None
+                            except Exception as e:
+                                st.subheader(f"An error occurred: {e}")
+                                return None
                         # fig, ax = plt.subplots(1, 2, figsize=(8, 12), sharex=True)
                         fig, ax = plt.subplots(1, 2, figsize=(5, 10), sharex=True, gridspec_kw={'width_ratios': [1, 0.1]})
                         fig.subplots_adjust(top=0.85)
@@ -2075,12 +2084,23 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
 
 
+
+
                         @st.cache_data()
                         def make_facies_log_plot(df_fill, col_lith,n_cc):
                             # n_cc = st.slider('Enter the number for the clusters:', min_value=2, max_value=10, value=5)
 
                             def get_cmap(n, name='hsv'):
-                                return plt.cm.get_cmap(name, n)
+                                try:
+                                    # Using the new method to get the colormap
+                                    cmap = plt.colormaps[name].resampled(n)
+                                    return cmap
+                                except KeyError as e:
+                                    st.subheader(f"Colormap {name} not found. Error: {e}")
+                                    return None
+                                except Exception as e:
+                                    st.subheader(f"An error occurred: {e}")
+                                    return None
 
                             facies_colors = get_cmap(n_cc, name='hsv')
 
