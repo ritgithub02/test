@@ -45,6 +45,9 @@ import time
 start_time = time.time()
 
 
+import matplotlib.pyplot as plt
+
+
 
 
 
@@ -855,90 +858,88 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             st.subheader('Formation Tops Plot')
             with st.expander("View"):
                 if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')) or dftfc:
-                    ftd, fbd, ffn = st.columns(3)
+                    ftd,fbd,ffn=st.columns(3)
 
-                    # Assuming f_df is already defined and loaded with the formation tops data
-                    # f_df = pd.read_csv('path_to_your_formation_file.csv')
 
-                    selected_column_top_depth = ftd.selectbox(
-                        'Select top depth', f_df.columns, 
-                        index=f_df.columns.get_loc('Top depth (m)') if 'Top depth (m)' in f_df.columns else 1
-                    )
-                    selected_column_base_depth = fbd.selectbox(
-                        'Select base depth', f_df.columns, 
-                        index=f_df.columns.get_loc('Base depth (m)') if 'Base depth (m)' in f_df.columns else 1
-                    )
-                    selected_column_formation_name = ffn.selectbox(
-                        'Select Formation', f_df.columns,
-                        index=f_df.columns.get_loc('Formation name') if 'Formation name' in f_df.columns else 1
-                    )
+                    
+                                         
+                     
 
+                    
+                    selected_column_top_depth = ftd.selectbox('Select top depth',f_df.columns, index=f_df.columns.get_loc('Top depth (m)') if 'Top depth (m)' in f_df.columns else 1)
+                    selected_column_base_depth = fbd.selectbox('Select base depth',f_df.columns, index=f_df.columns.get_loc('Base depth (m)') if 'Base depth (m)' in f_df.columns else 1)
+                    selected_column_formation_name = ffn.selectbox('Select Formation',f_df.columns,index=f_df.columns.get_loc('Formation name') if 'Formation name' in f_df.columns else 1)
                     if (
                         selected_column_top_depth is not None
                         and selected_column_formation_name is not None
                         and selected_column_base_depth is not None
-                        and not isinstance(f_df[selected_column_top_depth].iloc[0], str)
-                        and not isinstance(f_df[selected_column_base_depth].iloc[0], str)
+                        and not isinstance(f_df[selected_column_top_depth][0], str)
+                        and not isinstance(f_df[selected_column_base_depth][0], str)
                     ):
                         combined_depth = f_df[selected_column_top_depth].tolist() + f_df[selected_column_base_depth].tolist()
                         maximum_value = max(combined_depth)
                         depth_for_formation_plot = np.arange(0, maximum_value, 0.15)
+                        import matplotlib.pyplot as plt
 
                         def get_cmap(n, name='hsv'):
-                            return plt.cm.get_cmap(name, n)
+                            try:
+                                # Using the new method to get the colormap
+                                cmap = plt.colormaps[name].resampled(n)
+                                return cmap
+                            except KeyError as e:
+                                print(f"Colormap {name} not found. Error: {e}")
+                                return None
+                            except Exception as e:
+                                print(f"An error occurred: {e}")
+                                return None
 
+                        # fig, ax = plt.subplots(1, 2, figsize=(8, 12), sharex=True)
                         fig, ax = plt.subplots(1, 2, figsize=(5, 10), sharex=True, gridspec_kw={'width_ratios': [1, 0.1]})
                         fig.subplots_adjust(top=0.85)
                         ax[0].set_title('Formation Tops', fontsize=10, fontweight='bold')
                         cmap = get_cmap(len(f_df[selected_column_top_depth]))
-
                         for form_num in range(len(f_df[selected_column_top_depth])):
-                            condition = (
-                                (f_df[selected_column_top_depth][form_num] < depth_for_formation_plot) & 
-                                (depth_for_formation_plot < f_df[selected_column_base_depth][form_num])
-                            )
-                            ax[0].fill_betweenx(
-                                depth_for_formation_plot, 0, 1, where=condition, facecolor=cmap(form_num), alpha=0.5
-                            )
-
+                            condition = (f_df[selected_column_top_depth][form_num] < depth_for_formation_plot) & (depth_for_formation_plot < f_df[selected_column_base_depth][form_num])
+                            ax[0].fill_betweenx(depth_for_formation_plot, 0, 1, where=condition, facecolor=cmap(form_num), alpha=0.5)
+                        #ax.set_ylim([max(well_df['DEPTH']), min(well_df['DEPTH'])])
                         ax[0].set_ylabel('Depth')
                         for i in range(len(f_df[selected_column_base_depth])):
                             ax[0].axhline(y=f_df[selected_column_top_depth][i], color='r', alpha=1)
                             ax[0].axhline(y=f_df[selected_column_base_depth][i], color='r', alpha=1)
-                            ax[0].text(
-                                0.2, (f_df[selected_column_top_depth][i] + f_df[selected_column_base_depth][i]) / 2,
-                                f_df[selected_column_formation_name][i], fontsize=9, color='k'
-                            )
-
+                            ax[0].text(0.2, (f_df[selected_column_top_depth][i]+f_df[selected_column_base_depth][i])/2, f_df[selected_column_formation_name][i],fontsize=9,color='k')
                         ax[0].set_xlim([0, 1])
-                        ax[0].set_yticks(np.arange(0, 5000, 500))
+                        ax[0].set_yticks(np.arange(0,5000, 500))
+                        # ax[0].set_yticklabels(ax[0].get_yticks(), fontsize=4)
                         ax[0].set_xlabel('Formations')
+                        ax[0].set_ylabel('Depth')
+                        # Hide x-axis ticks
                         ax[0].set_xticks([])
-
+                        # ax[1].set_title('Selected Formations', fontsize=14, fontweight='bold')
                         ax[1].set_title('Selected\nFormations', fontsize=10, fontweight='bold')
                         cmap = get_cmap(len(f_df[selected_column_top_depth]))
-
                         for form_num in range(len(f_df[selected_column_top_depth])):
-                            condition = (
-                                (f_df[selected_column_top_depth][form_num] < well_df['DEPTH']) & 
-                                (well_df['DEPTH'] < f_df[selected_column_base_depth][form_num])
-                            )
-                            ax[1].fill_betweenx(
-                                well_df.DEPTH, 0, 1, where=condition, facecolor=cmap(form_num), alpha=0.5
-                            )
-
+                            condition = (f_df[selected_column_top_depth][form_num] < well_df['DEPTH']) & (well_df['DEPTH'] < f_df[selected_column_base_depth][form_num])
+                            ax[1].fill_betweenx(well_df.DEPTH, 0, 1, where=condition, facecolor=cmap(form_num), alpha=0.5)
+                        #ax.set_ylim([max(well_df['DEPTH']), min(well_df['DEPTH'])])
+                        ax[1].set_ylabel('Depth')
+                        for i in range(len(f_df[selected_column_base_depth])):
+                            ax[1].axhline(y=f_df[selected_column_top_depth][i], color='r', alpha=1)
+                            ax[1].axhline(y=f_df[selected_column_base_depth][i], color='r', alpha=1)
+                            # ax[1].text(0.2, (f_df[selected_column_top_depth][i]+f_df[selected_column_base_depth][i])/2, f_df[selected_column_formation_name][i],fontsize=12,color='k')
                         ax[1].set_xlim([0, 1])
+                        # ax[1].set_xlabel('Formations')
                         ax[1].set_ylabel("")
                         ax[1].set_xticks([])
-                        ax[1].set_yticks(np.arange(0, 5000, 500))
+                        ax[1].set_yticks(np.arange(0,5000, 500))
                         ax[0].invert_yaxis()
                         ax[1].invert_yaxis()
                         ax[1].set_yticks([])
-
-                        jkkl, lkkj = st.columns(2)
+                        jkkl,lkkj=st.columns(2)
                         jkkl.pyplot(fig)
                 else:
-                    st.warning("Upload Formation Tops file in Data Loading Tab")
+                     st.warning("Upload Formation Tops file in Data Loading Tab")
+
+
 
 
 
@@ -2087,18 +2088,27 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
 
 
+
+
                         @st.cache_data()
-                        def make_facies_log_plot(df_fill, col_lith, n_cc):
-                            # Ensure the number of clusters doesn't exceed the available colors
-                            if n_cc > len(colors_list):
-                                st.error(f"Number of clusters ({n_cc}) exceeds the number of available colors ({len(colors_list)}).")
-                                return
+                        def make_facies_log_plot(df_fill, col_lith,n_cc):
+                            # n_cc = st.slider('Enter the number for the clusters:', min_value=2, max_value=10, value=5)
 
-                            logs = df_fill[col_lith].copy()
+                            def get_cmap(n, name='hsv'):
+                                try:
+                                    # Using the new method to get the colormap
+                                    cmap = plt.colormaps[name].resampled(n)
+                                    return cmap
+                                except KeyError as e:
+                                    print(f"Colormap {name} not found. Error: {e}")
+                                    return None
+                                except Exception as e:
+                                    print(f"An error occurred: {e}")
+                                    return None
 
-                            # Interpolating missing values
+                            logs = df_fill[col_lith]
+
                             logs.interpolate(method='linear', limit_direction='both', axis=0, inplace=True)
-
                             # Standardize the data
                             scaled_data = StandardScaler().fit_transform(logs)
 
@@ -2113,6 +2123,8 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             # Assign cluster labels to the logs
                             logs['Cluster'] = kmeans.labels_
 
+                            cmap_facies = get_cmap(n_cc,'tab20')
+
                             ztop = df_fill.DEPTH.min()
                             zbot = df_fill.DEPTH.max()
 
@@ -2126,7 +2138,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 ax[i].plot(logs[log_name], df_fill.DEPTH, color=color, label=log_name)
 
                             im = ax[len(col_lith)].imshow(cluster, interpolation='none', aspect='auto',
-                                                        cmap=None, vmin=0, vmax=n_cc - 1)
+                                                           cmap=cmap_facies, vmin=0, vmax=n_cc - 1)
 
                             divider = make_axes_locatable(ax[len(col_lith)])
                             cax = divider.append_axes("right", size="20%", pad=0.05)
@@ -2145,13 +2157,18 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 if i != 0:
                                     ax[i].set_yticklabels([])
 
-                            ax[len(col_lith)].set_ylim(ztop, zbot)
-                            ax[len(col_lith)].invert_yaxis()
+                            if df_fill['DEPTH'].iloc[0] > df_fill['DEPTH'].iloc[-1]:
+                                ax[len(col_lith)].invert_yaxis()
+                            else:
+                                pass
                             ax[len(col_lith)].set_xlabel('Facies', fontsize=16)
                             ax[len(col_lith)].set_yticklabels([])
                             ax[len(col_lith)].set_xticklabels([])
 
                             st.pyplot(f)
+
+
+
 
 
 
@@ -3274,14 +3291,17 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
                         condition_ntg = (df_fill['Vsh'] <= nvsh) & (np.array(Sw) <=nswsd) & (df_fill['TPHI'] >= ntphi)
                         npayz=[]
-                        for depth, is_condition_met in zip(df_fill['DEPTH'], condition_ntg):
-                            if is_condition_met:
-                                ax5.axhline(y=depth, color='teal', alpha=0.09)
-                                npayz.append(1)
-                            else:
-                                npayz.append(0)
+                        ax5.fill_betweenx(df_fill['DEPTH'], 0, 1, where=condition_ntg, color='teal', alpha=0.8)
+                        #for depth, is_condition_met in zip(df_fill['DEPTH'], condition_ntg):
+                        #    if is_condition_met:
+                        #        #ax5.axhline(y=depth, color='teal', alpha=0.09)
+                        #        npayz.append(1)
+                        #    else:
+                        #        npayz.append(0)
+                        npayz = np.where(condition_ntg, 1, 0)
                         df_fill['Net Pay Zone']=npayz
                         ax5.set_xlabel('NTG_FLAG',color='teal', fontsize=14)
+                        ax5.set_xlim(0,1)
 
                         ax5.xaxis.set_label_position('top')
                         # ax6.set_ylim(max_value,min_value)
@@ -3303,13 +3323,17 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
                         condition_res = (df_fill['Vsh'] <= rvsh) & (np.array(Sw) <=rswsd) & (df_fill['TPHI'] >= rtphi)
                         resz=[]
-                        for depth, is_condition_met in zip(df_fill['DEPTH'], condition_res):
-                            if is_condition_met:
-                                ax6.axhline(y=depth, color='sandybrown', alpha=0.09)
-                                resz.append(1)
-                            else:
-                                resz.append(0)
+                        ax6.fill_betweenx(df_fill['DEPTH'], 0, 1, where=condition_res, color='sandybrown', alpha=0.8)
+                        #for depth, is_condition_met in zip(df_fill['DEPTH'], condition_res):
+                        #    if is_condition_met:
+                        #        ax6.axhline(y=depth, color='sandybrown', alpha=0.09)
+                        #        resz.append(1)
+                        #    else:
+                        #        resz.append(0)
                         ax6.set_xlabel('RES_FLAG',color='sandybrown', fontsize=14)
+                        ax6.set_xlim(0,1)
+
+                        resz = np.where(condition_res, 1, 0)
                         df_fill['Reservoir']=resz
                         ax6.xaxis.set_label_position('top')     
                         ax6.tick_params(axis='x', which='both', bottom=False)
