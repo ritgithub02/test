@@ -728,62 +728,100 @@ with t1:
 
 
 
-####################################################################################
-#                             Checking for the default mneomenic                   #
-####################################################################################
-
-#1 Bit Size
-matched_mnemonics_BS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['BitSize'].values]
-
-default_column_BS = matched_mnemonics_BS[0] if matched_mnemonics_BS else 'BS'
-
-#2 Caliper
-
-matched_mnemonics_CALI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Caliper'].values]
-
-default_column_CALI = matched_mnemonics_CALI[0] if matched_mnemonics_CALI else 'CALI'
-
-#3 Gamma ray
-
-matched_mnemonics_GR = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['GR'].values]
-
-default_column_GR = matched_mnemonics_GR[0] if matched_mnemonics_GR else 'GR'
-
-#4 Neutron Porosity
-
-matched_mnemonics_NPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['NPHI'].values]
-
-default_column_NPHI = matched_mnemonics_NPHI[0] if matched_mnemonics_NPHI else 'NPHI'
-
-#5 Density Porosity
-
-matched_mnemonics_DPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['PHIT'].values]
-
-default_column_DPHI = matched_mnemonics_DPHI[0] if matched_mnemonics_DPHI else 'DPHI'
-
-#6 Density 
-
-matched_mnemonics_RHOB = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['RHOB'].values]
-
-default_column_RHOB = matched_mnemonics_RHOB[0] if matched_mnemonics_RHOB else 'RHOB'
-
-#7 Deep Resistivity 
-
-matched_mnemonics_RESD = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rt'].values]
-
-default_column_RESD = matched_mnemonics_RESD[0] if matched_mnemonics_RESD else 'AT90'
-
-#8 Shallow Resistivity
-
-matched_mnemonics_RESS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rxo'].values]
-
-default_column_RESS = matched_mnemonics_RESS[0] if matched_mnemonics_RESS else 'AT10'
-
 
     # ##########################################################################
     # #                          Visualization                                 #
     # ##########################################################################            
-if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')) or dfle:           
+if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')) or dfle:
+
+
+
+
+    ####################################################################################
+    #                             Checking for the default mneomenic                   #
+    ####################################################################################
+
+    #1 Bit Size
+    matched_mnemonics_BS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['BitSize'].values]
+
+    default_column_BS = matched_mnemonics_BS[0] if matched_mnemonics_BS else 'BS'
+
+    #2 Caliper
+
+    matched_mnemonics_CALI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Caliper'].values]
+
+    default_column_CALI = matched_mnemonics_CALI[0] if matched_mnemonics_CALI else 'CALI'
+
+    #3 Gamma ray
+
+    matched_mnemonics_GR = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['GR'].values]
+
+    default_column_GR = matched_mnemonics_GR[0] if matched_mnemonics_GR else 'GR'
+
+    #4 Neutron Porosity
+
+    matched_mnemonics_NPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['NPHI'].values]
+
+    default_column_NPHI = matched_mnemonics_NPHI[0] if matched_mnemonics_NPHI else 'NPHI'
+
+    #5 Density Porosity
+
+    matched_mnemonics_DPHI = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['PHIT'].values]
+
+    default_column_DPHI = matched_mnemonics_DPHI[0] if matched_mnemonics_DPHI else 'DPHI'
+
+    #6 Density 
+
+    matched_mnemonics_RHOB = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['RHOB'].values]
+
+    default_column_RHOB = matched_mnemonics_RHOB[0] if matched_mnemonics_RHOB else 'RHOB'
+
+    #7 Deep Resistivity 
+
+    matched_mnemonics_RESD = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rt'].values]
+
+    default_column_RESD = matched_mnemonics_RESD[0] if matched_mnemonics_RESD else 'AT90'
+
+    #8 Shallow Resistivity
+
+    matched_mnemonics_RESS = [curve_item for curve_item in las_file.keys() if curve_item in dfMN['Rxo'].values]
+
+    default_column_RESS = matched_mnemonics_RESS[0] if matched_mnemonics_RESS else 'AT10'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     with t2:
             
 
