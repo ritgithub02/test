@@ -3411,7 +3411,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             label="Download as LAS (well-log)",
                             key="download_las",
                             data=file,
-                            file_name=f'{file_name}las'
+                            file_name=f'{file_name}.las'
                         )
             dwnld()
         
