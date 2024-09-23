@@ -18,12 +18,8 @@ from PIL import Image
 import missingno as msno
 import requests
 from io import BytesIO
-# import welly
-# import welly.quality as wq
-# import seaborn as sns
 from tempfile import NamedTemporaryFile
 import tempfile
-# from fpdf import FPDF  
 import itertools
 import openpyxl
 import random
@@ -34,9 +30,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import scale
 from sklearn.decomposition import FactorAnalysis
 from sklearn.cluster import KMeans
-# Visualization libraries
-# import seaborn as sns
-# import matplotlib as mpl
 import matplotlib.colors as colors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from sklearn.preprocessing import scale
@@ -46,49 +39,12 @@ start_time = time.time()
 
 
 import matplotlib.pyplot as plt
-
-
-
-
-
-
-
-# st.set_page_config(
-#     page_title="PetroHarrit",
-#     page_icon="🌏",
-#     layout="wide",
-#     initial_sidebar_state='collapsed'
-# )
-
-
-
-
-
-
-# if 'button' not in st.session_state:
-#     st.session_state.button = False
-
-
-# sta = 'collapsed' if st.session_state.button else 'expanded'
-
 st.set_page_config(
     page_title="PetroHarrit",
     page_icon="🌏",
     layout="wide",
     initial_sidebar_state='expanded'
 )
-
-
-
-# def toggle():
-#     st.session_state.button = not st.session_state.button
-
-# st.button("Toggle Sidebar", on_click=toggle)
-
-
-
-
-## web---------------*
 
 def clone_github_repository(github_repo_url, destination_directory):
     # Get the repository name from the URL
@@ -113,30 +69,6 @@ git_url = 'https://github.com/ritgithub02/pfiles'
 dest_dir = "files"
 clone_github_repository(git_url, dest_dir)
 
-
-
-
-
-
-# github_repo_url = 'https://github.com/ritgithub02/pd_f'
-# destination_directory = "exp"
-# clone_github_repository(github_repo_url, destination_directory)
-
-# _component_func = components.declare_component(
-#     "plotly1",
-#     path="./exp/pd_f-main"
-# )
-
-
-# def plotly_events(fig: go.Figure):
-#     spec = fig.to_json()
-#     component_value = _component_func(spec=spec, default=None)
-#     return component_value
-
-
-
-
-
 def display_image_from_url(image_url,pos):
     response = requests.get(image_url)
     
@@ -153,72 +85,13 @@ display_image_from_url("https://raw.githubusercontent.com/ritgithub02/data/main/
 
 
 
-# def create_linkedIn_profile_link(profile_url, image_url):
-#     markdown_text = f'<a href="{profile_url}"><img src="{image_url}" alt="LinkedIn Profile" width=30 height=30></a>'
-#     return markdown_text
-# def create_gmail_profile_link(profile_email, image_url):
-#     markdown_text = f'<a href="mailto:{profile_email}"><img src="{image_url}" alt="Gmail Profile" width=35 height=25></a>'
-#     return markdown_text
-
-
-# lin="https://raw.githubusercontent.com/ritgithub02/data/main/LinkedIn_icon_circle.svg.png"
-# gml="https://raw.githubusercontent.com/ritgithub02/data/main/download%20(1).png"
-
-
-## -------------------------*
-
-# #  local-------------*
-
-
-
-# #@st.cache_data(experimental_allow_widgets=True)
-# def plotly_events(fig: go.Figure):
-#     spec = fig.to_json()
-#     component_value = _component_func(spec=spec, default=None)
-#     return component_value
-
-# # Declare the custom component
-# _component_func = components.declare_component(
-#     "plotly1",
-#     path="./plotly1"
-# )
-
-
-# def display_image_from_loc(file_location, pos):
-#     try:
-#         image = Image.open(file_location)
-#         pos.image(image, caption='')
-#     except Exception as e:
-#         st.write(f"Failed to open the image. Error: {str(e)}")
-
-# display_image_from_loc("./files/img/ship.png", st)
-
-# pt1,pt2,pt3=st.columns(3)
-# display_image_from_loc("./files/img/petroharrit.png", pt1)
-
-
-# def create_linkedIn_profile_link(profile_url, image_location):
-#     image_url = st.image(image_location, width=30, caption="LinkedIn Profile Image")
-#     markdown_text = f'<a href="{profile_url}">{image_url}</a>'
-#     return markdown_text
-
-# def create_gmail_profile_link(profile_email, image_location):
-#     image_url = st.image(image_location, width=35, caption="Gmail Profile Image")
-#     markdown_text = f'<a href="mailto:{profile_email}">{image_url}</a>'
-#     return markdown_text
-
-
-# lin="./files/img/linkd.png"
-# gml="./files/img/gmail_icon.png"
-
-# #-----------------------------*
-# ---------------------------------------------------------------------------------LOADING-------
-
 css = """
 <style>
 .stTabs {
   width: 100%;
   margin-bottom: 2rem;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
 .stTabs [data-baseweb="tab-list"] {
@@ -226,38 +99,154 @@ css = """
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1.5rem;
-  background-color: #f8f9fa;
-  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Soft gradient for tab list background */
+  border-radius: 1rem 1rem 0 0;
 }
 
 .stTabs [data-baseweb="tab-list"] button {
-  font-size: 2rem;
-  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  padding: 0.5rem 1.5rem;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
-.stTabs [data-baseweb="tab-list"] button:hover,
-.stTabs [data-baseweb="tab-list"] button:active,
+.stTabs [data-baseweb="tab-list"] button:hover {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  transform: translateY(-3px); /* Lift effect on hover */
+}
+
+.stTabs [data-baseweb="tab-list"] button:active {
+  background-color: #bbdefb;
+  border-color: #64b5f6;
+  transform: translateY(1px); /* Push button down when clicked */
+  box-shadow: none;
+}
+
 .stTabs [data-baseweb="tab-list"] button.is-selected {
-  background-color: #f0f0f0;
-  border-color: #ccc;
+  background-color: #1976d2;
+  color: #fff;
+  border-color: #0d47a1;
+  transform: scale(1.05); /* Slightly enlarge selected tab */
 }
 
 .stTabs [data-baseweb="tab-pane"] {
   padding: 2rem 1.5rem;
-  border-radius: 0.5rem;
-  background-color: #fff;
+  background: #fff;
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Shadow for the content pane */
+  animation: fadeIn 0.4s ease-in-out; /* Smooth content transition */
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* Content enters from below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* --- Expander Styling --- */
+.stExpander {
+  margin-top: 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(245, 247, 250, 0.1), rgba(195, 207, 226, 0.1)); /* Reduced opacity for background */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  opacity: 1; /* Lower opacity for the entire expander */
+}
+
+
+.stExpander header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #37474f;
+  padding: 0.5rem;
+  background-color: #e3f2fd; /* Light blue background for header */
+  border-radius: 1rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow on header */
+}
+
+.stExpander [data-testid="stExpanderContent"] {
+  padding: 1rem;
+  background-color: #ffffff; /* White background for content area */
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Plotly Figure Styling --- */
+.stPlotlyChart {
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.stPlotlyChart:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* --- Pyplot Figure Styling --- */
+.stPyplot {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #fafafa; /* Very light gray for Pyplot figure background */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease;
+}
+
+.stPyplot:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* --- Button Styling --- */
+.stButton > button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #1976d2; /* Primary blue background */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for background and shadow */
+}
+
+.stButton > button:hover {
+  background-color: #1565c0; /* Darker blue on hover */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.stButton > button:active {
+  background-color: #0d47a1; /* Even darker blue when clicked */
+  box-shadow: none; /* Remove shadow when clicked */
+  transform: scale(0.98); /* Slight scale down on click */
+}
+
+/* --- General Styling for Headings and Text --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #37474f; /* Dark gray for headings */
+}
+
+p, label {
+  font-family: 'Open Sans', sans-serif;
+  color: #546e7a; /* Lighter gray for paragraph and label text */
+}
+
 </style>
 """
 
 st.markdown(css, unsafe_allow_html=True)
 
 t1, t2, t3 = st.tabs(['Data Loading', 'Basic Visualization' ,'Formation Evaluation with Visulization'])
+
+
 
 def curvename(df_unit,column_names):
     column_units = []
@@ -288,12 +277,42 @@ def convert_units(log_name, factor, unit):
     elif unit == "Divide":
         return well_df[log_name] / factor
     return well_df[log_name]  # If no conversion is selected
+
+def las_header_table(las_file):
+    if las_file:
+        head1,head2,head3,head4=st.columns(4)
+        header_data = {
+            'MNEM.': las_file.keys(),
+            'UNIT': [curve.unit for curve in las_file.curves],
+            'DESCRIPTION': [curve.descr for curve in las_file.curves],
+        }
+        well_data = {
+            'MNEM.': las_file.well.keys(),
+            'VALUE': [las_file.well[key].value for key in las_file.well.keys()],
+            'DESCRIPTION': [las_file.well[key].descr for key in las_file.well.keys()],
+        }
+        param_data = {
+            'MNEM.': las_file.params.keys(),
+            'UNIT': [param.unit for param in las_file.params],
+            'VALUE': [param.value for param in las_file.params],
+            'DESCRIPTION': [param.descr for param in las_file.params],
+        }
+        head1.subheader("CURVE INFORMATION")
+        header_df = pd.DataFrame(header_data)
+        header_table = header_df.to_html(classes='las-header-table', index=False, escape=False)
+        head1.write(header_table, unsafe_allow_html=True)
+        head2.subheader("WELL INFORMATION")
+        well_df = pd.DataFrame(well_data)
+        well_table = well_df.to_html(classes='las-header-table', index=False, escape=False)
+        head2.write(well_table, unsafe_allow_html=True)
+        head3.subheader("PARAMETER INFORMATION")
+        param_df = pd.DataFrame(param_data)
+        param_table = param_df.to_html(classes='las-header-table', index=False, escape=False)
+        head3.write(param_table, unsafe_allow_html=True)
+
+
+
             
-#--------------Mneomenic file ----------------------------#
-
-# Make sure file should be in same folder or in place as the streamlit_app
-
-# dfMN = pd.read_excel('Mnemonics_of_logdata.xlsx')
 dfMN = pd.read_excel("./files/pfiles-main/Mnemonics_of_logdata.xlsx")
 
 # ----------------------------------------------------------------------------------TAB 1--
@@ -307,10 +326,6 @@ with t1:
     lsf.subheader('Las File')
     file = lsf.file_uploader('Upload the LAS file')
     dfle=st.checkbox('Use demo file')
-
-    # with st.spinner('Wait for it...'):
-    #     time.sleep(time.time() - start_time)
-    # wait for it 
     if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
     # if file is not None:
         
@@ -322,19 +337,13 @@ with t1:
         if las_file is not None:
             lsf.success('Las File Uploaded Successfully')
         else:            
-            lsf.warning('Warning message')
-
-        
-        # well = welly.Well.from_lasio(las_file)
-        
+            lsf.warning('Warning message')    
         df1=las_file.df()
         df1.reset_index(inplace=True)
         
         well_data=las_file.df()
         well_data.reset_index(inplace=True)
         well_df = pd.DataFrame(well_data)
-
-
 
         datau = []
         for curve in las_file.curves:
@@ -367,28 +376,10 @@ with t1:
         st.title("")
         st.subheader("LAS File Header Information")
         with st.expander("Curves Information"):
-            header_info = las_file.header
 
-            
-            for key, value in header_info.items():
-                st.write(f"{key}: {value}")
-            
-            if 'well' in header_info:
-                st.subheader("Well Information")
-                well_info = header_info['well']
-                for key, value in well_info.items():
-                    st.write(f"{key}: {value}")
-            
-            if 'curves' in header_info:
-                st.subheader("Curves Information")
-                curves_info = header_info['curves']
-                for curve in curves_info:
-                    st.write(f"Curve Name: {curve['mnemonic']}")
-                    st.write(f"Unit: {curve['unit']}")
-                    st.write(f"Description: {curve['descr']}")
-                    st.write(f"API Code: {curve['API_code']}")
-                    st.title("")
-                    st.title("")
+            header = las_header_table(las_file)
+            st.title("")
+            st.title("")
         st.title("")        
         st.subheader("Well Log Unit Conversion")
         with st.expander('Unit Conversion'):
@@ -414,14 +405,6 @@ with t1:
                     else:
                         st.write('Unit Convesion has to be done')
 
-
-
-
-
-    
-
-
-        
         columns = well_df.columns
         st.title("")
         with lsf.expander("View Data"):
@@ -450,18 +433,12 @@ with t1:
             return las_file,file_l, well_data, well_df
         # las_file,file_l,well, well_data, well_df = gorg()
         las_file,file_l, well_data, well_df = gorg()
-           
-
         datau = []
         for curve in las_file.curves:
             unit = curve.unit
             xx=curve.mnemonic
             datau.append([xx,unit])
         df_unit = pd.DataFrame(datau)
-
-
-
-
 
         st.sidebar.subheader('Depth Selction')
     
@@ -485,27 +462,9 @@ with t1:
         st.subheader("LAS File Header Information")
         with st.expander("Curves Information"):
             header_info = las_file.header
-            # st.title("")
-            
-            for key, value in header_info.items():
-                st.write(f"{key}: {value}")
-            
-            if 'well' in header_info:
-                st.subheader("Well Information")
-                well_info = header_info['well']
-                for key, value in well_info.items():
-                    st.write(f"{key}: {value}")
-            
-            if 'curves' in header_info:
-                st.subheader("Curves Information")
-                curves_info = header_info['curves']
-                for curve in curves_info:
-                    st.write(f"Curve Name: {curve['mnemonic']}")
-                    st.write(f"Unit: {curve['unit']}")
-                    st.write(f"Description: {curve['descr']}")
-                    st.write(f"API Code: {curve['API_code']}")
-                    st.title("")
-                    st.title("")
+            header = las_header_table(las_file)
+            st.title("")
+            st.title("")
         st.title("")        
         st.subheader("Well Log Unit Conversion")
         with st.expander('Unit Conversion'):
@@ -530,14 +489,6 @@ with t1:
                         # st.write(well_df)
                     else:
                         st.write('Unit Convesion has to be done')
-
-
-
-
-
-    
-
-
         
         columns = well_df.columns
         st.title("")
@@ -558,37 +509,15 @@ with t1:
     else:
         lsf.error('LAS File Upload is Required')
 
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
+   
     st.sidebar.header('')
     st.sidebar.header('')
-
-
-
-
-
-
-
 
     with st.sidebar.expander('Our motive'):
         st.markdown("Welcome to PetroHarrit \n\nThank you for exploring our interface created by IITISM students for a petrophysical analysis and visualization assignment. PetroHarrit offers an interactive platform for comprehensive analysis, providing a range of features for your petrophysical needs. \n\nStay tuned for our upcoming user manual to guide you through the functionalities. We're continually working on adding more features to enhance your experience. We hope you find PetroHarrit valuable for your work. Your feedback is important to us as we strive to improve and bring you the latest updates. \n\nEnjoy your analysis journey with PetroHarrit!")
         st.markdown('Thanks:')
         st.markdown("[WAPIMS](https://wapims.dmp.wa.gov.au/WAPIMS/)", unsafe_allow_html=True)
         st.markdown('For demo data, including LAS files, formation top data, and core data')
-
-
 
     with st.sidebar.expander('About us'):
         st.write("For queries:")
@@ -607,28 +536,6 @@ with t1:
 
         lg2.markdown("[🔗](https://www.linkedin.com/in/harsh-prajapati-682b63287/)", unsafe_allow_html=True)
         lg5.markdown("[🔗](https://www.linkedin.com/in/ritesh-gond-bb853928b/)", unsafe_allow_html=True)
-
-        ## for now
-        # profile1 = "https://www.linkedin.com/in/harsh-prajapati-682b63287/"
-        # markdown_text = create_linkedIn_profile_link(profile1, lin)
-        # lg1.markdown(markdown_text, unsafe_allow_html=True)
-
-
-        # profile2 = "https://www.linkedin.com/in/ritesh-gond-bb853928b/"
-        # markdown_text = create_linkedIn_profile_link(profile2, lin)
-        # lg4.markdown(markdown_text, unsafe_allow_html=True)
-
-
-        # profile3 = "22mc0041@iitism.ac.in"
-        # markdown_text = create_gmail_profile_link(profile3,gml)
-        # lg2.markdown(markdown_text, unsafe_allow_html=True)
-
-
-
-        # profile4 = "22mc0071@iitism.ac.in"
-        # markdown_text = create_gmail_profile_link(profile4,gml)
-        # lg5.markdown(markdown_text, unsafe_allow_html=True)
-
 
 
         st.markdown("")
@@ -660,20 +567,6 @@ with t1:
 
         Additionally, if your calculations require a subset of logs, consider reducing the number of logs to speed up the process.
         """)
-
-
-    # with st.sidebar.expander('Download exe version'):
-
-    #     st.markdown('[Download](https://drive.google.com/drive/folders/1x84JjnHposE5fy1Cav8wB0OpofzSF4oO?usp=sharing)')
-
-        ## for now
-        # profile9 = "https://www.linkedin.com/in/ppmcurtin/"
-        # markdown_text = create_linkedIn_profile_link(profile9, lin)
-        # qlg1.markdown(markdown_text, unsafe_allow_html=True)
-
-        # profile10 = "partham@iitism.ac.in"
-        # markdown_text = create_gmail_profile_link(profile10,gml)
-        # qlg2.markdown(markdown_text, unsafe_allow_html=True)
 
         
     fmf.subheader('Formation Tops')
@@ -723,15 +616,6 @@ with t1:
         else:
             st.error('csv/xlsx File Upload is Required')
    
-    
-
-
-
-
-
-    # ##########################################################################
-    # #                          Visualization                                 #
-    # ##########################################################################            
 if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')) or dfle:
 
 
@@ -789,51 +673,13 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
     default_column_RESS = matched_mnemonics_RESS[0] if matched_mnemonics_RESS else 'AT10'
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ # ##########################################################################
+# #                          Visualization                                 #
+# ##########################################################################            
 
     with t2:
             
-
-        # with st.spinner('Wait for it...'):
-        #     time.sleep(time.time() - start_time)
-
-
-
             st.subheader('Interactive Plot')
-             # st.title("Visualization")
-            
-            # @st.cache_data(experimental_allow_widgets=True)
             def plot(well_df):
                 cola, colb  = st.columns(2)
 
@@ -861,14 +707,13 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 curve_index += 1
                             fig.update_layout(height=1000, showlegend=False, yaxis={'title': curvename(df_unit,[deps])[0], 'autorange': 'reversed'})
                             # Change the plot style family (template)
-                            fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
+                            fig.update_layout(template='plotly_dark')  
                             st.plotly_chart(fig, use_container_width=True)
                         else:
                             st.write('Please complete your selections for the line plot')
                 with colb.expander(" Scatter Plot"):
                     colc, cold  = st.columns(2)
                     curves = colc.multiselect('Select Curves To Plot', well_df.columns , key="multiselect1O")
-                    #semilog_col = dfMN['Rxo'].to_list() + dfMN['Rt'].to_list() +['RT20','RT50','RT30','RT60','RT20','RT50','RT60']+['AT20','AT30','AT50','AT60','AT20','AT50','AT60']
                     matched_mnemonics_semilog_columns = [curve_item for curve_item in curves if curve_item in semilog_col]
                     LG= cold.multiselect('Log Scale for:',curves, key="multiselect2O",default=matched_mnemonics_semilog_columns)
 
@@ -887,7 +732,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 fig.update_xaxes(type=log_bool, row=1, col=curve_index)
                                 curve_index += 1
                             fig.update_layout(height=1000, showlegend=False, yaxis={'title': curvename(df_unit,[deps])[0], 'autorange': 'reversed'})
-                            fig.update_layout(template='plotly_dark')  # Change to 'plotly_dark' template, or use any other available template
+                            fig.update_layout(template='plotly_dark')  
                             st.plotly_chart(fig, use_container_width=True)
                         else:
                                 st.write('Please complete selections for the Scatter plot')            
@@ -896,15 +741,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     hist_curve = colc.selectbox('Select a Curve', well_df.columns, index=2)
                     if hist_curve is not None:
                         bin_size = colk.number_input("Bin size", value=(well_df[hist_curve].mean())/60)
-                    # log_option = colb.radio('Select Linear or Logarithmic Scale', ('Linear', 'Logarithmic'))
                     hist_col = cold.color_picker('Select Histogram Colour', value='#1aa2aa')
-                    # colc.write('Color:  ' + hist_col)
-
-                    # if log_option == 'Linear':
-                    #     log_bool = False
-                    # elif log_option == 'Logarithmic':
-                    #     log_bool = True
-                    # st.write(df_fill)
                     if st.checkbox("Submit  "):
                         histogram = px.histogram(well_df, x=hist_curve, log_x=False, nbins=int((well_df[hist_curve].max() - well_df[hist_curve].min()) / bin_size))
                         histogram.update_traces(marker_color=hist_col)
@@ -961,11 +798,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         st.plotly_chart(xplot, use_container_width=True)
 
             plot(well_df)
-
-
-
-
-
 
             st.subheader('Triple Combo Plot')
             with st.expander("View"):
@@ -1059,47 +891,10 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         fig=create_triple_combo_plot(selected_column_NPHI,selected_column_RESD,selected_column_GR,selected_column_RHOB)
                         st.pyplot(fig)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             st.subheader('Formation Tops Plot')
             with st.expander("View"):
                 if uploaded_file1 is not None and (uploaded_file1.name.lower().endswith('.xlsx') or uploaded_file1.name.lower().endswith('.csv')) or dftfc:
                     ftd,fbd,ffn=st.columns(3)
-
-
-                    
-                                         
-                     
-
                     
                     selected_column_top_depth = ftd.selectbox('Select top depth',f_df.columns, index=f_df.columns.get_loc('Top depth (m)') if 'Top depth (m)' in f_df.columns else 1)
                     selected_column_base_depth = fbd.selectbox('Select base depth',f_df.columns, index=f_df.columns.get_loc('Base depth (m)') if 'Base depth (m)' in f_df.columns else 1)
@@ -1162,15 +957,12 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         for i in range(len(f_df[selected_column_base_depth])):
                             ax[1].axhline(y=f_df[selected_column_top_depth][i], color='r', alpha=1)
                             ax[1].axhline(y=f_df[selected_column_base_depth][i], color='r', alpha=1)
-                            # ax[1].text(0.2, (f_df[selected_column_top_depth][i]+f_df[selected_column_base_depth][i])/2, f_df[selected_column_formation_name][i],fontsize=12,color='k')
                         ax[1].set_xlim([0, 1])
-                        # ax[1].set_xlabel('Formations')
                         ax[1].set_ylabel("")
                         ax[1].set_xticks([])
                         max_y = f_df[selected_column_base_depth].max()
                         max_y_val = np.ceil(max_y / 100) * 100
                         ax[1].set_yticks(np.arange(0,max_y_val, 500))
-                        # ax[1].set_yticks(np.arange(0,5000, 500))
                         ax[0].invert_yaxis()
                         ax[1].invert_yaxis()
                         ax[1].set_yticks([])
@@ -1182,17 +974,12 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
 
 
-
-
-
-
     # ----------------------------------------------------------------------------------TAB 2--
 
 ####################################################################################
 #                             Quality check                                        #
 ####################################################################################
 
-# if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')):
 if file is not None and (file.name.lower().endswith('.las') or file.name.lower().endswith('.LAS')) or dfle:
     with t3:
         st.subheader('Data Preparation')
@@ -1205,74 +992,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                 msno.matrix(well_df, ax=ax)
                 cj,jc=st.columns([1,2])
                 jc.pyplot(fig)
-
-
-
-
-            # @st.cache_data(experimental_allow_widgets=True)
-            # def checks():
-
-            #     st.subheader("Checks:")
-
-
-
-            #     sa1, sa2, sa3= st.columns(3)
-            #     sa2.subheader("Quality Check")
-
-            #     # Dictionary 'tests' containing quality control checks for different categories of data
-            #     tests = {
-            #         'Each': [
-            #             wq.no_flat,  # Check for no flat curves
-            #             wq.no_gaps,  # Check for no gaps in the data
-            #             wq.not_empty  # Check if the data is not empty
-            #         ],
-            #         'GR': [
-            #             wq.all_positive,  # Check if all values are positive
-            #             wq.all_between(0, 250),  # Check if all values are between 0 and 250
-            #             wq.check_units(['API', 'GAPI'])  # Check if units are either 'API' or 'GAPI'
-            #         ],
-            #         'RHOB': [
-            #             wq.all_positive,  # Check if all values are positive
-            #             wq.all_between(1.5, 3),  # Check if all values are between 1.5 and 3
-            #             wq.check_units(['G/CC', 'g/cm3'])  # Check if units are either 'G/CC' or 'g/cm3'
-            #         ]
-            #     }
-
-            #     data_qc_table = well.qc_table_html(tests)
-
-            #     btc = sa2.checkbox("View Table", key='k1')
-            #     if btc:
-            #         st.markdown(data_qc_table, unsafe_allow_html=True)
-
-
-
-            #     sa3.subheader("NaN Value Checks")
-            #      # Check the fraction of NaN values
-            #     tests_nans = {
-            #         'Each': [wq.fraction_not_nans] 
-            #     }
-
-            #     # Generate an HTML table for quality control checks on NaN values using 'well' data and the 'tests_nans' dictionary
-            #     data_nans_qc_table = well.qc_table_html(tests_nans)
-
-
-
-            #     btc1s = sa3.checkbox("View Plot", key='krj2')
-            #     if btc1s:
-
-
-            #         fig, ax = plt.subplots()
-            #         msno.matrix(well_df, ax=ax)
-            #         cj,jc=st.columns([1,2])
-            #         jc.pyplot(fig)
-
-
-            #     btc1 = sa3.checkbox("View Table", key='k2')
-            #     if btc1:
-            #         st.write(data_nans_qc_table, unsafe_allow_html=True)
-
-            # checks()
-
 
             
             ##########################################################################
@@ -1336,10 +1055,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     condition_bad = abs(bit_size - well_df[selected_column_CALI]) > tol_val
                     condition_good = abs(bit_size - well_df[selected_column_CALI]) <= tol_val
 
-                    # Create a new DataFrame for bad data
                     df_bad_data = well_df[condition_bad]
-
-                    # Print or display the bad data DataFrame
                     st.subheader("Bad Data:")
                     st.write(df_bad_data)
                 return  selected_column_CALI,condition_bad,condition_good,df_bad_data,selected_column_BS, tol_val,well_df
@@ -1351,7 +1067,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             outlier_operation = out.radio('Outlier Removal', ['Not Selected','Selected'])
             # Radio button for nanremovel
             nanremoval_zone_operation = nanr.radio('NaN removal', ['Not Selected','Selected'])
-            # R adio for the Patching
+    
             Patchinng_operation=patc.radio('Patching', ['Not Selected','Selected'])
 
 
@@ -1369,10 +1085,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                 #                     Outlier using histogram                            #
                 ##########################################################################    
             if outlier_operation=='Selected':
-                # with st.spinner('Wait for it...'):
-                #     time.sleep(time.time() - start_time)
-                def outlr(well_df):
-                    #st.write(well_df)                
+                def outlr(well_df):               
                     st.subheader("Outlier Removal")
 
                     ot= st.radio('Outlier Removal',['Interquartile range (IQR) method','Using Histogram'])
@@ -1433,9 +1146,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             for curve_name in selected_logs:
                                 filtered_df=remove_outliers(filtered_df, curve_name,slider_values[log][0],slider_values[log][1],vla)
 
-
-
-
                         st.subheader("Filtered:")
                         for row in range(num_rows):
                             cols = st.columns(columns_per_row)
@@ -1477,9 +1187,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         if selected_curves:
                             for curve_name in selected_curves:
                                 filtered_df=remove_outliers(filtered_df, curve_name,vla,threshold=3)
-                                # Display the cleaned data
-                                # st.dataframe(well_df[[curve_name]])
-                        # st.subheader('Box Plots')
                         num_plots_per_row = 3
                         num_columns = len(selected_curves)
                         num_rows = (num_columns - 1) // num_plots_per_row + 1
@@ -1503,9 +1210,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     return df_fill
                 df_fill = outlr(well_df)
             if nanremoval_zone_operation=='Selected':
-                    # with st.spinner('Wait for it...'):
-                    #     time.sleep(time.time() - start_time)
-
+                   
                     st.subheader("NaN value Filling with:")
                     clm = st.multiselect('Select Curve', df_fill.columns, key="multiselect5", default=[df_fill.columns[1]])
 
@@ -1584,16 +1289,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                       end_time = time.time()  
                       elapsed_time = end_time - start_time
 
-                    #   with st.spinner('Wait for it...'):
-                    #       time.sleep(elapsed_time)
-                    #   st.title(f"Time taken: {elapsed_time} seconds")
-
                       component_value = plotly_events(fig)
-
-                      # Display the chart
-                      # st.write(component_value)
-
-                      # Display the clicked data points
                       if component_value:
                           st.subheader("Clicked Data Points:")
                           clicked_data_with_names = []
@@ -2127,17 +1823,9 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
         if lithology_operation == 'Selected':
             with st.expander("Lithogy Identification"):
 
-                # @st.cache_data(experimental_allow_widgets=True)
-                # def lithi():
                 lt1,lt2=st.columns(2)
                 with lt1:
-                    # def toggle():
-                    #     st.session_state.button = not st.session_state.button
-
-                    # st.write('For improved visibility: collapses sidebar ')
-                    # st.button("Click here",key='sidebar_callapse_key', on_click=toggle)
-
-
+                    
                     st.subheader("Lithology ") 
                     lith_col = dfMN['NPHI'].to_list() + dfMN['GR'].to_list() + dfMN['PEF'].to_list() + dfMN['RHOB'].to_list()
                     matched_mnemonics_lith_columns = [curve_item for curve_item in las_file.keys() if curve_item in lith_col]
@@ -2184,9 +1872,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             aq=st.radio('Boundary picking method',['Picking from Plot','Mannual Input'])
                             if aq=='Picking from Plot':
 
-
-                                # with st.spinner('Wait for it...'):
-                                #     time.sleep(time.time() - start_time)
                                     component_value = plotly_events(fig)
                                     if component_value:
                                         st.subheader("Clicked Points:")
@@ -2195,10 +1880,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                             clicked_data.append({"X": point['x'], "Y": point['y']})
                                     l_df = pd.DataFrame(clicked_data)
                             if aq=='Mannual Input':
-
-
-                                # with st.spinner('Wait for it...'):
-                                #     time.sleep(time.time() - start_time)
                                     st.plotly_chart(fig)
                                     hg,gh=st.columns(2)
                                     num_zones = hg.number_input("How many depth zones do you want to define?", min_value=1, step=1)
@@ -2353,6 +2034,8 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             ax[len(col_lith)].set_xticklabels([])
 
                             st.pyplot(f)
+                            
+                            return logs
 
 
 
@@ -2376,19 +2059,12 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                 n_cc = st.number_input('Enter the number for the clusters:', value=10)
                 
                                 f = make_facies_log_plot(df_fill, column_name,n_cc)
+                                df_fill['UnSup_Cluster'] = f['Cluster']
                     else:
                         st.warning('Please selection of the columns.')
 
                     st.write("")
                     st.write("")
-
-
-
-
-
-
-                # return l_df
-                # l_df = lithi()                
 
             ##########################################################################
             #                  Gas bearing zone identication                         #
@@ -2396,12 +2072,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             g_df = []
         if gas_zone_operation == 'Selected':
             with st.expander("Gas Bearing Zone And Triple Combo"):
-
-
-                # def toggle():
-                #     st.session_state.button = not st.session_state.button
-                # st.write('For improved visibility: collapses sidebar ')
-                # st.button("Click here ",key='sidebar_callapse_key_gas', on_click=toggle)
                 tcg,tcr,tcd,tcn=st.columns(4)
                 gb1,gb2=st.columns(2)
                 with gb1:
@@ -2416,10 +2086,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
                     selected_column_NPHI=tcn.selectbox('NPHI', df_fill.columns, index=well_df.columns.get_loc(default_column_NPHI) if default_column_NPHI in well_df.columns else 1)
 
-                    # @st.cache_data(experimental_allow_widgets=True)
-                    # def gzone()
-                    #data = df_fill.copy()
-                    #selected_column_RHOB = st.selectbox('RHOB', data.columns, index=data.columns.get_loc('RHOB') if 'RHOB' in data.columns else 1)
                     if selected_column_NPHI is not None and selected_column_RESD is not None and selected_column_GR is not None and selected_column_RHOB is not None:
                         clicked_data = []
                         fig = make_subplots(rows=1, cols=4, shared_yaxes=True, horizontal_spacing=0.053,subplot_titles=[curvename(df_unit,[selected_column_CALI])[0],curvename(df_unit,[selected_column_GR])[0],'          '+curvename(df_unit,[selected_column_RHOB])[0]+' cross ' + curvename(df_unit,[selected_column_NPHI])[0]])
@@ -2686,14 +2352,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
         if gas_zone_operation == 'Not Selected':
             gas.warning('gas-bearing zone identification skipped.')
-
-
-
-
-
-
-
-
 
 
         # container2 = st.container(border=True)
@@ -3041,13 +2699,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
             if df_fill['TPHI'] is not None:
                 with st.expander("4. Water Saturation"):
-                    # def toggle():
-                    #     st.session_state.button = not st.session_state.button
-                    # st.write('For improved visibility: collapses sidebar ')
-                    # st.button("Click here ",key='sidebar_callapse_sw', on_click=toggle)
-
-
-
                     st.subheader("Water Saturation")
 
 
@@ -3321,9 +2972,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                             st.title('')
                             st.title('')
                             st.pyplot(fig)
-                            df_fill['Sw_ar']=Sw_ar
-                    # return df_fill, Sw_ar,Sw_sd, sim
-                    # df_fill, Sw_ar,Sw_sd, sim = sw_cal()    
+                            df_fill['Sw_ar']=Sw_ar  
             else:
                 st.warning('TPHI is not decided for the calculation')
         if all_op == 'Reservoir flag & NTG':
@@ -3368,9 +3017,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         ax4 = plt.subplot2grid((1, 6), (0, 3), rowspan=1, colspan=1)
                         ax5 = plt.subplot2grid((1, 6), (0, 5), rowspan=1, colspan=1)
                         ax6 = plt.subplot2grid((1, 6), (0, 4), rowspan=1, colspan=1)
-
-                            # ax6 = plt.subplot2grid((1, 5), (0, 5), rowspan=1, colspan=1)
-
 
                         ax1.plot(df_fill[selected_column_CALI], df_fill.DEPTH, lw=0.9, color='blue')
                         ax1.fill_betweenx(df_fill.DEPTH, df_fill[selected_column_BS], df_fill[selected_column_CALI], facecolor='yellow')
@@ -3505,18 +3151,10 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         # ax5.xaxis.tick_top()
                         ax5.tick_params(axis='x', which='both', bottom=False)
                         ax5.set_xticks([])
-                        #ax5.axis('off')
-
 
                         condition_res = (df_fill['Vsh'] <= rvsh) & (np.array(Sw) <=rswsd) & (df_fill['TPHI'] >= rtphi)
                         resz=[]
                         ax6.fill_betweenx(df_fill['DEPTH'], 0, 1, where=condition_res, color='sandybrown', alpha=0.8)
-                        #for depth, is_condition_met in zip(df_fill['DEPTH'], condition_res):
-                        #    if is_condition_met:
-                        #        ax6.axhline(y=depth, color='sandybrown', alpha=0.09)
-                        #        resz.append(1)
-                        #    else:
-                        #        resz.append(0)
                         ax6.set_xlabel('RES_FLAG',color='sandybrown', fontsize=14)
                         ax6.set_xlim(0,1)
 
@@ -3526,9 +3164,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         ax6.tick_params(axis='x', which='both', bottom=False)
                         ax6.set_ylim(max_value_depth,min_value_depth)
                         ax6.set_xticks([])
-
-
-
                         plt.tight_layout()
                         nt1,nt2 = st.columns([1.5,0.5])
                         nt1.pyplot(fig)
@@ -3557,16 +3192,12 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         return df_fill
                     df_fill = r_n_zones()
 
-
-
         st.write('-------------------------------------------------------------------------------------------------------------------------------------')
 
         st.subheader('Core Data Plot')
         with st.expander("View"):
             if uploaded_file2 is not None and (uploaded_file2.name.lower().endswith('.xlsx') or uploaded_file2.name.lower().endswith('.csv')) or dftcc:
                 st.title('')
-
-
                 if 'TPHI' in df_fill.columns:
                     def core_dat(c_df):
                         rty, yty, tyr= st.columns(3)  # Changed from 2 to 3 columns
@@ -3672,8 +3303,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
 
                                 slope = model.coef_[0][0]
                                 intercept = model.intercept_[0]
-
-
                                 def plot_permeability_vs_depth(df_fill, permeability_data, top_depth_data, permeability_label, color1, color2):
                                     fig, ax = plt.subplots(figsize=(2, 6))  
 
@@ -3692,7 +3321,6 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                                     ax.spines['top'].set_position(("axes", 1.0))
 
                                     xlabel_padding = 2            # Padding in points
-
 
                                     ax.set_xlabel("Estimated Permeability", color=color1, fontsize=6, labelpad=xlabel_padding)
 
@@ -3730,30 +3358,60 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
             else:
                 st.warning('Upload core data in Data Loading tab')
 
-
-
         st.subheader('Final Dataset')
-        with st.expander("View / Download"):
 
-            
+        with st.expander("View / Download"):
+            # Add radio buttons to select the download format
+            file_name = st.text_input("Enter the file name (without extension):", value="well_logs")
+            if not file_name:
+                file_name = "well_logs"
+                
+            download_format = st.radio(
+                "Select download format",
+                ('CSV', 'XLSX', 'LAS')
+            )
+        
             def dwnld():
                 st.write(df_fill.describe())
-                csv_button = st.download_button(
-                    label="Download as CSV",
-                    key="download_csv",
-                    data=df_fill.to_csv(index=False).encode('utf-8'),
-                    file_name='well_logs.csv',
-                    mime='text/csv'
-                )
+        
+                # Run based on the selected format
+                if download_format == 'CSV':
+                    csv_button = st.download_button(
+                        label="Download as CSV",
+                        key="download_csv",
+                        data=df_fill.to_csv(index=False).encode('utf-8'),
+                        file_name=f'{file_name}.csv',
+                        mime='text/csv'
+                    )
+                
+                elif download_format == 'XLSX':
+                    xlsx_buffer = BytesIO()
+                    df_fill.to_excel(xlsx_buffer, index=False)
+                    xlsx_button = st.download_button(
+                        label="Download as XLSX",
+                        key="download_xlsx",
+                        data=xlsx_buffer.getvalue(),
+                        file_name=f'{file_name}.xlsx',
+                        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+        
+                elif download_format == 'LAS':
+                    output_las = lasio.LASFile()
+                    df_fill.set_index('DEPTH', inplace=True)
+                    unit_dict = dict(zip(df_unit[0], df_unit[1]))
 
-                xlsx_buffer = BytesIO()
-                df_fill.to_excel(xlsx_buffer, index=False)
-                xlsx_button = st.download_button(
-                    label="Download as XLSX",
-                    key="download_xlsx",
-                    data=xlsx_buffer.getvalue(),
-                    file_name='well_logs.xlsx',
-                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                )
+                    for curve_name in df_fill.columns:
+                        unit = unit_dict.get(curve_name, '')
 
+                        output_las.append_curve(curve_name, df_fill[curve_name], unit=unit)
+
+                    output_las.write(f'{file_name}.las')
+                    with open(f'{file_name}.las', "rb") as file:
+                        las_button = st.download_button(
+                            label="Download as LAS (well-log)",
+                            key="download_las",
+                            data=file,
+                            file_name=f'{file_name}las'
+                        )
             dwnld()
+        
