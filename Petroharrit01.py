@@ -3402,7 +3402,7 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                     df_fill.set_index('DEPTH', inplace=True)
                     # Move 'DEPTH' to the first column
                     df_fill.reset_index(inplace=True)
-                    unit_dict = dict(zip(df_unit[0], df_unit[1])
+                    unit_dict = dict(zip(df_unit[0], df_unit[1]))
 
 
 
