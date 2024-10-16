@@ -3395,11 +3395,19 @@ if file is not None and (file.name.lower().endswith('.las') or file.name.lower()
                         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     )
         
+
                 elif download_format == 'LAS':
                     output_las = lasio.LASFile()
+                    # Set 'DEPTH' as the index and then reset it so it's a column again
                     df_fill.set_index('DEPTH', inplace=True)
-                    unit_dict = dict(zip(df_unit[0], df_unit[1]))
+                    # Move 'DEPTH' to the first column
+                    df_fill.reset_index(inplace=True)
+                    unit_dict = dict(zip(df_unit[0], df_unit[1])
 
+
+
+
+                    
                     for curve_name in df_fill.columns:
                         unit = unit_dict.get(curve_name, '')
 
